@@ -1,34 +1,53 @@
-﻿services:
-  db:
-    image: postgres:16
-    volumes:
-      - postgres_data:/var/lib/postgresql/data 
-    environment:
-      POSTGRES_DB: \        
-      POSTGRES_USER: \
-      POSTGRES_PASSWORD: \
+services:
+  redis:
+    image: redis:7-alpine
     restart: always
+    ports:
+      - "6379:6379"
 
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
-      - itms_logs:/app/logs
+      - ./logs:/app/logs
     env_file:
       - .env
     environment:
-      POSTGRES_DB: \
-      POSTGRES_USER: \    
-      POSTGRES_PASSWORD: \
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
-      - db
+      - redis
     ports:
       - "8000:8000"
     restart: always
 
-volumes:
-  postgres_data:
-  itms_logs:
+  celery_worker:
+    build: .
+    command: celery -A config worker -l info
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+    restart: always
+
+  celery_beat:
+    build: .
+    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+    restart: always

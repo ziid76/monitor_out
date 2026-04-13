@@ -1,0 +1,126 @@
+WARNING 2026-03-11 14:45:44,513 log 7 132009697765056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 14:45:44,530 basehttp 7 132009697765056 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+ERROR 2026-03-11 14:53:16,479 log 7 132009697765056 Internal Server Error: /vbpm/3/editor_v3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/vbpm/views.py", line 196, in workflow_editor_v3
+    return render(request, 'vbpm/x6_editor.html', {'workflow': workflow})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loaders/base.py", line 23, in get_template
+    contents = self.get_contents(origin)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loaders/cached.py", line 26, in get_contents
+    return origin.loader.get_contents(origin)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loaders/filesystem.py", line 23, in get_contents
+    return fp.read()
+           ^^^^^^^^^
+  File "<frozen codecs>", line 322, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8c in position 49: invalid start byte
+ERROR 2026-03-11 14:53:16,498 basehttp 7 132009697765056 "GET /vbpm/3/editor_v3/ HTTP/1.1" 500 136393
+WARNING 2026-03-11 14:53:16,632 log 7 132009697765056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 14:53:16,634 basehttp 7 132009697765056 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 14:53:16,875 log 7 132009697765056 Not Found: /favicon.ico
+WARNING 2026-03-11 14:53:16,877 basehttp 7 132009697765056 "GET /favicon.ico HTTP/1.1" 404 6672
+WARNING 2026-03-11 14:54:10,665 log 7 132009697765056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 14:54:10,669 basehttp 7 132009697765056 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:13:40,271 log 7 132009697765056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:13:40,272 basehttp 7 132009697765056 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:17:40,157 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:17:40,159 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:18:13,700 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:18:13,702 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:18:15,622 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:18:15,624 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:18:20,156 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:18:20,158 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:18:21,309 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:18:21,311 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:19:42,905 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:19:42,907 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:32:44,719 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:32:44,721 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:39:04,514 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:39:04,516 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:41:31,868 log 7 132009706157760 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:41:31,870 basehttp 7 132009706157760 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:52:43,931 log 7 132009716647616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:52:43,934 basehttp 7 132009716647616 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 16:59:25,001 log 7 132009716647616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 16:59:25,004 basehttp 7 132009716647616 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:01:16,682 log 7 132009716647616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:01:16,684 basehttp 7 132009716647616 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:13:05,040 log 7 132009688323776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:13:05,044 basehttp 7 132009688323776 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:03,619 log 60 138167780841152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:03,621 basehttp 60 138167780841152 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:09,425 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:09,430 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:16,275 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:16,280 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:19,370 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:19,372 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:20,728 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:20,730 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:39,219 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:39,222 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:40,688 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:40,690 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:54,840 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:54,841 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:26:56,097 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:26:56,099 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:27:14,348 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:27:14,350 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:27:17,487 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:27:17,488 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:27:20,451 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:27:20,452 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:27:22,584 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:27:22,585 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:30:57,057 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:30:57,059 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:30:58,259 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:30:58,261 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:40:38,429 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:40:38,431 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:40:40,022 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:40:40,023 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:40:49,934 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:40:49,935 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:40:57,870 log 60 138167680231104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:40:57,871 basehttp 60 138167680231104 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:45:35,543 log 60 138167772448448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:45:35,544 basehttp 60 138167772448448 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:46:32,126 log 60 138167772448448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:46:32,127 basehttp 60 138167772448448 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:47:03,459 log 60 138167772448448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:47:03,460 basehttp 60 138167772448448 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+WARNING 2026-03-11 17:47:30,427 log 60 138167772448448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-11 17:47:30,429 basehttp 60 138167772448448 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783

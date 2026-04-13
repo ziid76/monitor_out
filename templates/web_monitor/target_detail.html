@@ -1,0 +1,324 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block page_name %}{{ target.name }} 모니터링 상세{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+    <!-- Target Info Header -->
+    <div class="bg-white p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-3">
+                <h2 class="text-2xl font-bold text-slate-900">{{ target.name }} Monitoring</h2>
+                {% if target.last_status == 'UP' %}
+                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">UP</span>
+                {% elif target.last_status == 'DOWN' %}
+                <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">DOWN</span>
+                {% else %}
+                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">READY</span>
+                {% endif %}
+            </div>
+            <p class="text-slate-500">{{ target.url }}</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+             {% if can_manage %}
+             <button onclick="toggleModal('updateTargetModal')" class="px-4 py-2 border border-slate-200 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-50 transition-colors">
+                설정 변경
+            </button>
+            {% endif %}
+            <a href="{% url 'web_monitor:dashboard' %}" class="px-4 py-2 bg-primary text-slate-100 text-sm font-bold rounded-full hover:bg-slate-200 transition-colors">
+                목록으로
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Configuration Card -->
+        <div class="bg-white p-6 rounded-md border border-slate-100 shadow-sm flex flex-col gap-4">
+            <h3 class="font-bold text-slate-900 border-b border-slate-100 pb-3">설정 정보</h3>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">체크 주기</label>
+                    <p class="text-sm font-medium text-slate-900">{{ target.check_interval }}초</p>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">로그 보관 주기</label>
+                    <p class="text-sm font-medium text-slate-900">{{ target.log_retention_days }}일</p>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">정상 판단 시그니처</label>
+                    <div class="mt-1 flex flex-col gap-2">
+                        {% if target.signature_title %}
+                        <div class="p-2 bg-slate-50 rounded border border-slate-100">
+                            <span class="text-xs text-slate-400">Title:</span> <span class="text-sm font-medium">{{ target.signature_title }}</span>
+                        </div>
+                        {% endif %}
+                        {% if target.signature_text %}
+                        <div class="p-2 bg-slate-50 rounded border border-slate-100">
+                            <span class="text-xs text-slate-400">Text:</span> <span class="text-sm font-medium">{{ target.signature_text }}</span>
+                        </div>
+                        {% endif %}
+                        {% if target.signature_dom %}
+                        <div class="p-2 bg-slate-50 rounded border border-slate-100">
+                            <span class="text-xs text-slate-400">DOM:</span> <span class="text-sm font-medium">{{ target.signature_dom }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">알림 수신 대상자</label>
+                    <div class="mt-1 flex flex-wrap gap-1">
+                        {% for user in target.recipients.all %}
+                        <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">{{ user.username }}</span>
+                        {% empty %}
+                        <span class="text-sm text-slate-400">선택된 대상자 없음</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">활성 여부</label>
+                    <p class="text-sm font-medium text-slate-900">{% if target.is_active %}예{% else %}아니오{% endif %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Logs -->
+        <div class="lg:col-span-2 bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
+             <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-900">최근 점검 이력 (최근 50건)</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">시간</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">응답 시간</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">비고</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for log in logs %}
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-900">{{ log.checked_at|date:"Y-m-d H:i:s" }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if log.status == 'UP' %}
+                                <span class="text-emerald-600 font-bold text-sm">UP</span>
+                                {% else %}
+                                <span class="text-red-600 font-bold text-sm">DOWN</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-900">{{ log.response_time|stringformat:".3f" }}s</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs text-slate-600 whitespace-pre-wrap break-all flex-1">
+                                        {{ log.error_message|default:"-" }}
+                                    </span>
+                                    
+                                    <div class="flex items-center gap-1">
+                                        {% if forloop.first %}
+                                        <button onclick="openResponseModal('{{ target.pk }}', '{{ log.pk }}')" class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded hover:bg-indigo-100 transition-colors whitespace-nowrap">
+                                            최근응답
+                                        </button>
+                                        {% endif %}
+
+                                        {% if log.pinned_file %}
+                                        <button onclick="openPinnedModal('{{ log.pk }}')" class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded hover:bg-amber-100 transition-colors whitespace-nowrap" title="박제된 소스 보기">
+                                            박제보기
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                점검 이력이 없습니다.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Target Modal -->
+    <div id="updateTargetModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('updateTargetModal')"></div>
+            <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                    <h3 class="text-lg font-bold text-slate-900">모니터링 설정 변경</h3>
+                    <button onclick="toggleModal('updateTargetModal')" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <form action="{% url 'web_monitor:target_update' target.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="px-6 py-6 flex flex-col gap-4">
+                        {% for field in form %}
+                        {% if field.name != 'is_active' %}
+                        <div class="flex flex-col gap-1">
+                            <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <p class="text-xs text-slate-400">{{ field.help_text }}</p>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="flex items-center gap-2">
+                            {{ field }}
+                            <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                        <button type="button" onclick="toggleModal('updateTargetModal')" class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-800 transition-colors">취소</button>
+                        <button type="submit" class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors">저장하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Response View Modal -->
+    <div id="responseModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-md" onclick="toggleModal('responseModal')"></div>
+            <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold text-slate-900">최근 응답 소스 (Pure HTML)</h3>
+                        <span class="text-xs text-slate-400">서버로부터 수신된 순수 HTML 원본입니다.</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyToClipboard()" class="px-4 py-1.5 bg-slate-100 text-slate-700 text-xs font-bold rounded hover:bg-slate-200 transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">content_copy</span>
+                            복사하기
+                        </button>
+                        <button id="pinButton" onclick="pinCurrentResponse()" class="px-4 py-1.5 bg-amber-500 text-white text-xs font-bold rounded hover:bg-amber-600 transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">push_pin</span>
+                            박제하기
+                        </button>
+                        <button onclick="toggleModal('responseModal')" class="text-slate-400 hover:text-slate-600 transition-colors ml-4">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-slate-900 p-0 overflow-auto" style="height: 70vh;">
+                    <pre class="m-0 p-6 text-emerald-400 font-mono text-sm leading-relaxed whitespace-pre-wrap break-all selection:bg-emerald-500 selection:text-white" id="responseSourceCode"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentLogId = null;
+
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.toggle('hidden');
+        if (!modal.classList.contains('hidden')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openResponseModal(targetId, logId) {
+        currentLogId = logId;
+        toggleModal('responseModal');
+        // Show Pin button if it was hidden
+        document.getElementById('pinButton').classList.remove('hidden');
+        
+        const container = document.getElementById('responseSourceCode');
+        container.textContent = "최신 데이터를 불러오는 중...";
+
+        const url = "{% url 'web_monitor:view_last_response' target.pk %}";
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    container.textContent = data.content;
+                } else {
+                    container.textContent = "오류: " + data.message;
+                }
+            })
+            .catch(err => {
+                container.textContent = "불러오기 실패: " + err;
+            });
+    }
+
+    function openPinnedModal(logId) {
+        toggleModal('responseModal');
+        // Hide Pin button in viewing mode
+        document.getElementById('pinButton').classList.add('hidden');
+        
+        const container = document.getElementById('responseSourceCode');
+        container.textContent = "박제된 데이터를 불러오는 중...";
+
+        const url = "{% url 'web_monitor:view_pinned_response' 0 %}".replace('0', logId);
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    container.textContent = data.content;
+                } else {
+                    container.textContent = "오류: " + data.message;
+                }
+            })
+            .catch(err => {
+                container.textContent = "불러오기 실패: " + err;
+            });
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('responseSourceCode').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('소스 코드가 클립보드에 복사되었습니다.');
+        });
+    }
+
+    function pinCurrentResponse() {
+        if (!currentLogId) return;
+        if (!confirm('이 시점의 응답 결과를 해당 로그에 영구 박제하시겠습니까?')) return;
+        
+        const url = "{% url 'web_monitor:pin_response' 0 %}".replace('0', currentLogId);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // To show '박제보기' button
+            } else {
+                alert('실패: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류가 발생했습니다.');
+        });
+    }
+</script>
+{% endblock %}

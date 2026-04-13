@@ -1,0 +1,326 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block page_name %}웹사이트 모니터링 대시보드{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+    <!-- Status Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+            <div class="size-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                <span class="material-symbols-outlined">language</span>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-slate-500">전체 대상</p>
+                <h3 class="text-2xl font-bold text-slate-900">{{ total_count }}</h3>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+            <div class="size-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-slate-500">정상 (UP)</p>
+                <h3 class="text-2xl font-bold text-emerald-600">{{ up_count }}</h3>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+            <div class="size-12 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+                <span class="material-symbols-outlined">error</span>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-slate-500">장애 (DOWN)</p>
+                <h3 class="text-2xl font-bold text-red-600">{{ down_count }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Targets Table -->
+    <div class="bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="text-lg font-bold text-slate-900">모니터링 대상 목록</h3>
+            <div class="flex items-center gap-2">
+                <a href="{% url 'web_monitor:log_list' %}" class="px-4 py-2 bg-slate-100 text-slate-600 text-sm font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">list_alt</span>
+                    전체 로그 조회
+                </a>
+                {% if can_manage %}
+                <button onclick="toggleModal('optionSettingsModal')" class="px-4 py-2 border border-slate-200 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-50 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">settings</span>
+                    옵션 설정
+                </button>
+                <button onclick="toggleModal('addTargetModal')" class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm text-white">add</span>
+                    대상 추가
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">사이트 이름</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">URL</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">주기</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">마지막 체크</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for target in targets %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <a href="{% url 'web_monitor:target_detail' target.pk %}" class="font-bold text-slate-900 hover:text-primary transition-colors">
+                                {{ target.name }}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">{{ target.url }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-900">{{ target.check_interval }}초</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if target.last_status == 'UP' %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                UP
+                            </span>
+                            {% elif target.last_status == 'DOWN' %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
+                                <span class="size-1.5 rounded-full bg-red-500"></span>
+                                DOWN
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
+                                <span class="size-1.5 rounded-full bg-slate-400"></span>
+                                PENDING
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">
+                                {% if target.last_checked_at %}
+                                    {{ target.last_checked_at|date:"m/d H:i:s" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </span>
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+                            모니터링할 웹사이트가 등록되지 않았습니다.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Target Modal -->
+<div id="addTargetModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('addTargetModal')"></div>
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 class="text-lg font-bold text-slate-900">신규 모니터링 대상 추가</h3>
+                <button onclick="toggleModal('addTargetModal')" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form action="{% url 'web_monitor:target_add' %}" method="post">
+                {% csrf_token %}
+                <div class="px-6 py-6 flex flex-col gap-4">
+                    {% for field in form %}
+                    {% if field.name != 'is_active' %}
+                    <div class="flex flex-col gap-1">
+                        <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <p class="text-xs text-slate-400">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="flex items-center gap-2">
+                        {{ field }}
+                        <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                    <button type="button" onclick="toggleModal('addTargetModal')" class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-800 transition-colors">취소</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Option Settings Modal -->
+<div id="optionSettingsModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('optionSettingsModal')"></div>
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 class="text-lg font-bold text-slate-900">시스템 옵션 설정 및 명령 실행</h3>
+                <button onclick="toggleModal('optionSettingsModal')" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="px-6 py-6 flex flex-col gap-6">
+                <!-- Task Status Section -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            스케줄러 동작 상태
+                        </h4>
+                        <button onclick="refreshTaskStatus()" class="text-xs text-primary hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">refresh</span>
+                            새로고침
+                        </button>
+                    </div>
+                    <div id="taskStatusList" class="flex flex-col gap-2">
+                        <!-- Tasks will be loaded here -->
+                        <div class="p-4 border border-dashed border-slate-200 rounded-xl text-center text-xs text-slate-400">
+                            상태 로딩 중...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Command Execution Section -->
+                <div class="flex flex-col gap-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">terminal</span>
+                        관리 명령 실행
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button onclick="runCommand('setup_tasks')" class="p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-left group">
+                            <p class="font-bold text-slate-900 text-sm group-hover:text-primary transition-colors">스케줄러 초기 설정</p>
+                            <p class="text-xs text-slate-500 mt-1">Celery Beat 작업을 생성하고 초기화합니다.</p>
+                        </button>
+                        <button onclick="runCommand('check_web_status')" class="p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-left group">
+                            <p class="font-bold text-slate-900 text-sm group-hover:text-primary transition-colors">즉시 상태 점검</p>
+                            <p class="text-xs text-slate-500 mt-1">모든 대상 사이트에 대해 즉시 점검을 수행합니다.</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Console Output Section -->
+                <div id="commandConsole" class="hidden flex flex-col gap-2">
+                     <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase">실행 결과 (Console Output)</h4>
+                        <button onclick="clearConsole()" class="text-xs text-primary hover:underline">비우기</button>
+                     </div>
+                     <div id="consoleOutput" class="bg-slate-900 text-slate-300 p-4 rounded-xl font-mono text-xs h-64 overflow-y-auto whitespace-pre-wrap border border-slate-800 shadow-inner"></div>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button type="button" onclick="toggleModal('optionSettingsModal')" class="px-6 py-2 bg-slate-600 text-white text-sm font-bold rounded-full hover:bg-slate-700 transition-colors">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.toggle('hidden');
+        if (!modal.classList.contains('hidden')) {
+            document.body.style.overflow = 'hidden';
+            if (id === 'optionSettingsModal') {
+                refreshTaskStatus();
+            }
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    async function refreshTaskStatus() {
+        const listEl = document.getElementById('taskStatusList');
+        try {
+            const response = await fetch('/web-monitor/task-status/');
+            const data = await response.json();
+            
+            if (data.success && data.tasks.length > 0) {
+                listEl.innerHTML = data.tasks.map(task => `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex flex-col gap-0.5">
+                            <p class="text-sm font-bold text-slate-800">${task.name}</p>
+                            <p class="text-[10px] text-slate-400 font-mono italic">${task.task}</p>
+                            <p class="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">timer</span>
+                                주기: ${task.interval__every ? task.interval__every + ' ' + task.interval__period : task.crontab__hour + ':' + task.crontab__minute + ' (Crontab)'}
+                                ${task.last_run_at ? ' | 최근 실행: ' + new Date(task.last_run_at).toLocaleString() : ''}
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${task.enabled ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+                                ${task.enabled ? '활성화' : '비활성'}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                listEl.innerHTML = `
+                    <div class="p-8 border border-dashed border-slate-200 rounded-xl text-center flex flex-col items-center gap-2">
+                        <span class="material-symbols-outlined text-slate-300">warning</span>
+                        <p class="text-xs text-slate-400">등록된 스케줄이 없습니다. 초기 설정을 먼저 진행해 주세요.</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            listEl.innerHTML = `<p class="text-xs text-red-500 p-2">로딩 실패: ${error}</p>`;
+        }
+    }
+
+    async function runCommand(commandName) {
+        const consoleEl = document.getElementById('commandConsole');
+        const outputEl = document.getElementById('consoleOutput');
+        
+        consoleEl.classList.remove('hidden');
+        outputEl.innerHTML += `\n> Running: python manage.py ${commandName}...\n`;
+        outputEl.scrollTop = outputEl.scrollHeight;
+
+        try {
+            const response = await fetch(`/web-monitor/run-command/${commandName}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                outputEl.innerHTML += `<span class="text-emerald-400">${data.output}</span>`;
+                outputEl.innerHTML += `\n> Command completed successfully.\n`;
+                if (commandName === 'setup_tasks') {
+                    refreshTaskStatus();
+                }
+            } else {
+                outputEl.innerHTML += `<span class="text-red-400">Error: ${data.message}</span>\n`;
+                if (data.output) {
+                    outputEl.innerHTML += `<span class="text-red-300">${data.output}</span>`;
+                }
+            }
+        } catch (error) {
+            outputEl.innerHTML += `<span class="text-red-400">Request Failed: ${error}</span>\n`;
+        }
+        outputEl.scrollTop = outputEl.scrollHeight;
+    }
+
+    function clearConsole() {
+        document.getElementById('consoleOutput').innerHTML = '';
+        document.getElementById('commandConsole').classList.add('hidden');
+    }
+</script>
+{% endblock %}

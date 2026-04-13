@@ -4,32 +4,21 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>삼천리 ITMS</title>
+    <title>Web Monitor</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="{% static 'css/custom.css' %}?v=4" rel="stylesheet">
-    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <link href="{% static 'css/summernote-lite.css' %}" rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0077C8", // Pantone 3005C
-                        "background-light": "#ffffff", // Pure white background
-                        "background-dark": "#131711",
+                        "primary": "#0077C8",
+                        "background-light": "#f8fafc",
                         "surface-light": "#ffffff",
-                        "surface-dark": "#1c2619",
-                        "surface-highlight": "#f1f5f9", // Light grey for interactions in light mode
                     },
                     fontFamily: {
                         "display": ["Manrope", "sans-serif"]
@@ -38,7 +27,6 @@
                         "DEFAULT": "1rem",
                         "lg": "1.5rem",
                         "xl": "2rem",
-                        "2xl": "3rem",
                         "full": "9999px"
                     },
                 },
@@ -50,428 +38,71 @@
             .material-symbols-outlined {
                 font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             }
-            .icon-filled {
-                font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            }
-            ::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-            ::-webkit-scrollbar-track {
-                background: transparent;
-            }
-            ::-webkit-scrollbar-thumb {
-                @apply bg-slate-200 rounded-full;
-            }
-            ::-webkit-scrollbar-thumb:hover {
-                @apply bg-primary/50;
-            }
-            .accordion-chevron {
-                transition: transform 0.3s ease-in-out;
-            }
-            .accordion-item.accordion-open .accordion-chevron {
-                transform: rotate(90deg);
-            }
-            .accordion-content {
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-            }
-            .accordion-item.accordion-open .accordion-content {
-                max-height: 1000px;
-                transition: max-height 0.3s ease-in-out;
-            }
             .nav-link-active {
-                @apply bg-slate-50 text-primary font-bold shadow-sm !important;
+                @apply bg-blue-50 text-primary font-bold shadow-sm !important;
             }
             .nav-link-active .material-symbols-outlined {
                 @apply text-primary font-bold !important;
-            }
-            /* Remove any focus outlines, rings, or greenish lines from sidebar buttons and links */
-            #sidebar button, 
-            #sidebar a,
-            .accordion-btn,
-            .accordion-btn:focus,
-            .accordion-btn:active,
-            .accordion-btn:focus-visible,
-            #sidebar a:focus,
-            #sidebar a:focus-visible,
-            #sidebar a:active {
-                outline: none !important;
-                box-shadow: none !important;
-                --tw-ring-width: 0px !important;
-                --tw-ring-offset-width: 0px !important;
-                border-color: transparent !important;
             }
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-background-light text-slate-900 font-display overflow-hidden transition-colors duration-300">
+<body class="bg-background-light text-slate-900 font-display overflow-hidden">
     <div class="flex h-screen w-full relative">
         <div id="sidebarBackdrop" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden lg:hidden"></div>
-        {% if user.is_authenticated %}
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 flex flex-col justify-between border-r border-slate-100 bg-surface-light p-6 h-full overflow-y-auto transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div class="flex flex-col gap-4">
-                <a href="{% url 'dashboard' %}">
-                <div class="flex items-center gap-2 bg-white">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-12 " 
-                         style="background-image: url('{% static 'images/logo.png' %}');">
-                    </div>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 flex flex-col justify-between border-r border-slate-100 bg-surface-light p-6 h-full transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="flex flex-col gap-8">
+                <div class="flex items-center gap-2">
                     <div class="flex flex-col">
-                        <h1 class="text-slate-700 text-lg font-extrabold leading-tight">삼천리 ITMS</h1>
-                        <p class="text-center text-slate-500 text-xs font-medium">
-                            IT Management System
-                        </p>
+                        <h1 class="text-primary text-xl font-extrabold leading-tight">Web Monitor</h1>
+                        <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider">Lightweight Edition</p>
                     </div>
                 </div>
-                </a>
                 <nav class="flex flex-col gap-2">
-                    <!-- Work Management -->
-                    <div class="accordion-item">
-                        <button type="button" aria-expanded="false" class="accordion-btn flex w-full items-center justify-between gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined">assignment</span>
-                                <p class="text-sm font-bold">Work Management</p>
-                            </div>
-                            <span class="material-symbols-outlined text-base accordion-chevron">chevron_right</span>
-                        </button>
-                        <div class="accordion-content">
-                            <a class="flex items-center justify-between gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'task_list' %}?status=in_progress">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-base">task</span>
-                                    <p class="text-sm font-medium">업무목록</p>
-                                </div>
-                                {% if user.profile.task_count > 0 %}
-                                <span class="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-blue-500 text-[10px] font-black text-white shadow-sm">
-                                    {{ user.profile.task_count }}
-                                </span>
-                                {% endif %}
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'task_planner' %}">
-                                <span class="material-symbols-outlined text-base">calendar_view_day</span>
-                                <p class="text-sm font-medium">업무일정관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'task_roadmap' %}">
-                                <span class="material-symbols-outlined text-base">track_changes</span>
-                                <p class="text-sm font-medium">업무 Roadmap(팀)</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'worklog_list' %}">
-                                <span class="material-symbols-outlined text-base">calendar_view_week</span>
-                                <p class="text-sm font-medium">주간업무</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'weekly_report_list' %}">
-                                <span class="material-symbols-outlined text-base">summarize</span>
-                                <p class="text-sm font-medium">팀 주간보고</p>
-                            </a>
-
-                        </div>
-                    </div>
-
-                    <!-- Monitoring -->
-                    <div class="accordion-item">
-                        <button type="button" aria-expanded="false" class="accordion-btn flex w-full items-center justify-between gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined">monitor_heart</span>
-                                <p class="text-sm font-bold">Monitoring</p>
-                            </div>
-                            <span class="material-symbols-outlined text-base accordion-chevron">chevron_right</span>
-                        </button>
-                        <div class="accordion-content">
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'operation_log_list' %}">
-                                <span class="material-symbols-outlined text-base">list_alt</span>
-                                <p class="text-sm font-medium">시스템 일일점검</p>
-                            </a>
-
-<!--
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'operation_duty' %}">
-                                <span class="material-symbols-outlined text-base">manage_accounts</span>
-                                <p class="text-sm font-medium">점검담당자 관리</p>
-                            </a>
- -->
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'operation_calendar' %}">
-                                <span class="material-symbols-outlined text-base">calendar_month</span>
-                                <p class="text-sm font-medium">점검담당자 관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'hooks:incident_list' %}">
-                                <span class="material-symbols-outlined text-base">error</span>
-                                <p class="text-sm font-medium">인시던트 관리</p>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Asset Management -->
-                    <div class="accordion-item">
-                        <button type="button" aria-expanded="false" class="accordion-btn flex w-full items-center justify-between gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined">web_asset</span>
-                                <p class="text-sm font-bold">Asset Management</p>
-                            </div>
-                            <span class="material-symbols-outlined text-base accordion-chevron">chevron_right</span>
-                        </button>
-                        <div class="accordion-content">
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:topology' %}">
-                                <span class="material-symbols-outlined text-base">account_tree</span>
-                                <p class="text-sm font-medium">자산 토폴로지</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:system_list' %}">
-                                <span class="material-symbols-outlined text-base">dns</span>
-                                <p class="text-sm font-medium">시스템 자산관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:contract_list' %}">
-                                <span class="material-symbols-outlined text-base">contract</span>
-                                <p class="text-sm font-medium">계약 관리</p>
-                            </a>
-
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:hardware_list' %}">
-                                <span class="material-symbols-outlined text-base">memory</span>
-                                <p class="text-sm font-medium">HW 자산관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:software_list' %}">
-                                <span class="material-symbols-outlined text-base">album</span>
-                                <p class="text-sm font-medium">SW 자산관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'assets:inspection_dashboard' %}">
-                                <span class="material-symbols-outlined text-base">fact_check</span>
-                                <p class="text-sm font-medium">정기점검 관리</p>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Service Request -->
-                    <div class="accordion-item">
-                        <button type="button" aria-expanded="false" class="accordion-btn flex w-full items-center justify-between gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined">design_services</span>
-                                <p class="text-sm font-bold">Service Request</p>
-                            </div>
-                            <span class="material-symbols-outlined text-base accordion-chevron">chevron_right</span>
-                        </button>
-                        <div class="accordion-content">
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_request_type_list' %}">
-                                <span class="material-symbols-outlined text-base">edit_note</span>
-                                <p class="text-sm font-medium">SR 등록</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_request_reception_list' %}">
-                                <span class="material-symbols-outlined text-base">inbox</span>
-                                <p class="text-sm font-medium">SR 접수</p>
-                                {% if count_sr_reception > 0 %}
-                                <span class="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-red-500 text-[10px] font-black text-white shadow-sm ml-auto">
-                                    {{ count_sr_reception }}
-                                </span>
-                                {% endif %}
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_request_list' %}">
-                                <span class="material-symbols-outlined text-base">build</span>
-                                <p class="text-sm font-medium">SR 처리</p>
-                                {% if count_sr_processing > 0 %}
-                                <span class="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-blue-500 text-[10px] font-black text-white shadow-sm ml-auto">
-                                    {{ count_sr_processing }}
-                                </span>
-                                {% endif %}
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_request_search' %}">
-                                <span class="material-symbols-outlined text-base">search</span>
-                                <p class="text-sm font-medium">SR 조회</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_admin_approve_list' %}">
-                                <span class="material-symbols-outlined text-base">verified</span>
-                                <p class="text-sm font-medium">SR 승인</p>
-                                {% if count_sr_approval > 0 %}
-                                <span class="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-emerald-500 text-[10px] font-black text-white shadow-sm ml-auto">
-                                    {{ count_sr_approval }}
-                                </span>
-                                {% endif %}
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'service_request_report' %}">
-                                <span class="material-symbols-outlined text-base">analytics</span>
-                                <p class="text-sm font-medium">SR 리포트</p>
-                            </a>
-                        </div>
-                    </div>
-
-                    {% if user.profile.current_team_role == 'leader' or user.profile.current_team_role == 'admin' %}
-                    <!-- Admin -->
-                    <div class="accordion-item">
-                        <button type="button" aria-expanded="false" class="accordion-btn flex w-full items-center justify-between gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
-                                <p class="text-sm font-bold">Admin Menu</p>
-                            </div>
-                            <span class="material-symbols-outlined text-base accordion-chevron">chevron_right</span>
-                        </button>
-                        <div class="accordion-content">                            
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'user_list' %}">
-                                <span class="material-symbols-outlined text-base">group</span>
-                                <p class="text-sm font-medium">사용자 관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'category_list' %}">
-                                <span class="material-symbols-outlined text-base">label</span>
-                                <p class="text-sm font-medium">카테고리관리</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'batch:operations' %}">
-                                <span class="material-symbols-outlined text-base">batch_prediction</span>
-                                <p class="text-sm font-medium">일괄작업</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'personal_report_history' %}">
-                                <span class="material-symbols-outlined text-base">history_edu</span>
-                                <p class="text-sm font-medium">개인별 주간보고 이력조회</p>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'team_performance_list' %}">
-                                <span class="material-symbols-outlined text-base">pie_chart</span>
-                                <p class="text-sm font-medium">팀 성과 분석</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'dataset_status_list' %}">
-                                <span class="material-symbols-outlined text-base">data_usage</span>
-                                <p class="text-sm font-medium">요청현황 조회</p>
-                            </a>
-                            <a class="flex items-center gap-2 pl-12 pr-4 py-2 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors" href="{% url 'form_element_list' %}">
-                                <span class="material-symbols-outlined text-base">input</span>
-                                <p class="text-sm font-medium">신청항목 관리</p>
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
+                    <a class="flex items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="{% url 'web_monitor:dashboard' %}">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <p class="text-sm font-bold">대시보드</p>
+                    </a>
+                    <a class="flex items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="{% url 'web_monitor:log_list' %}">
+                        <span class="material-symbols-outlined">list_alt</span>
+                        <p class="text-sm font-bold">모니터링 로그</p>
+                    </a>
+                    <a class="flex items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="/admin/">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <p class="text-sm font-bold">Admin</p>
+                    </a>
                 </nav>
             </div>
 
-            <div class="flex flex-col gap-2">
-                <form action="{% url 'logout' %}" method="post">{% csrf_token %}
-                    <button type="submit" class="flex w-full items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors">
-                        <span class="material-symbols-outlined">logout</span>
-                        <p class="text-sm font-medium">Logout</p>
-                    </button>
-                </form>
-            </div>
         </aside>
-        {% endif %}
 
         <main class="flex-1 flex flex-col h-full overflow-hidden relative">
-            {% if user.is_authenticated %}
             <header class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-surface-light z-10 shrink-0">
                 <div class="flex items-center gap-4 lg:hidden">
                     <button id="mobileMenuBtn" class="p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <h2 class="text-lg font-bold">삼천리 ITMS</h2>
-                </div>
-                
-                <div class="hidden lg:flex flex-1 max-w-xl">
-                    <form class="flex w-full" method="get" action="{% url 'search' %}">
-                        <label class="flex w-full items-center rounded-full bg-slate-50 px-4 h-12 focus-within:ring-2 focus-within:ring-primary/50 transition-all border border-slate-100">
-                            <span class="material-symbols-outlined text-slate-400">search</span>
-                            <input class="w-full bg-transparent border-none text-sm px-4 text-slate-900 placeholder:text-slate-400 focus:ring-0" 
-                                   type="search" name="q" value="{{ request.GET.q }}" placeholder="검색어 입력..."/>
-                        </label>
-                    </form>
-                </div>
-                
-                <div class="flex items-center gap-3">
-                    <!-- Notifications -->
-                    <div class="relative">
-                        <button id="notificationBtn" class="flex items-center justify-center size-10 rounded-full bg-slate-50 hover:bg-slate-200 transition-colors relative border border-slate-100">
-                            <span class="material-symbols-outlined text-slate-600">notifications</span>
-                            {% if unread_notifications_count > 0 %}
-                            <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-surface-light"></span>
-                            {% endif %}
-                        </button>
-                        <!-- Notification Dropdown -->
-                        <div id="notificationDropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-slate-200 z-50 hidden">
-                            <div class="p-4 border-b border-slate-200">
-                                <h6 class="font-semibold text-slate-900">최근 알림</h6>
-                            </div>
-                            <div class="max-h-64 overflow-y-auto">
-                                {% for notification in recent_notifications %}
-                                <a href="{% url 'notifications:mark_read' notification.id %}" class="block p-4 hover:bg-slate-50 border-b border-slate-100 last:border-b-0">
-                                    <div class="flex items-start gap-3">
-                                        <span class="material-symbols-outlined text-blue-500 text-sm mt-0.5">info</span>
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm {% if not notification.is_read %}font-semibold{% endif %} text-slate-900 truncate">{{ notification.title }}</p>
-                                            {% if not notification.is_read %}
-                                            <span class="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full mt-1">new</span>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </a>
-                                {% empty %}
-                                <div class="p-4 text-center text-slate-500 text-sm">새로운 알림이 없습니다</div>
-                                {% endfor %}
-                            </div>
-                            {% if recent_notifications %}
-                            <div class="p-4 border-t border-slate-200">
-                                <button onclick="markAllNotificationsRead()" class="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium">
-                                    모든 알림 읽음으로 표시
-                                </button>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="h-8 w-px bg-slate-200 mx-2"></div>
-                    
-                    <!-- User Dropdown -->
-                    <div class="relative">
-                        <button id="userBtn" class="flex items-center gap-2 pr-4 pl-1 py-1 rounded-full hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
-                            {% if user.profile.avatar %}
-                                <img src="{{ user.profile.avatar.url }}" alt="프로필" class="rounded-full size-8 object-cover">
-                            {% else %}
-                                 <div class="bg-center bg-no-repeat bg-cover rounded-full size-8" 
-                                      style="background-image: url('{% static 'images/logo.png' %}');"></div>
-                            {% endif %}
-                            <span class="text-sm font-bold hidden md:block">
-                                {% if user.profile %}
-                                    {{ user.profile.display_name }}
-                                {% else %}
-                                    {{ user.username }}
-                                {% endif %}
-                            </span>
-                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                        </button>
-                        <!-- User Dropdown Menu -->
-                        <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-50 hidden">
-                            <a href="{% url 'profile_edit' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 border-b border-slate-100">
-                                <span class="material-symbols-outlined text-slate-600 text-sm">edit</span>
-                                <span class="text-sm font-medium text-slate-900">프로필 편집</span>
-                            </a>
-                            <a href="{% url 'password_change' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 border-b border-slate-100">
-                                <span class="material-symbols-outlined text-slate-600 text-sm">key</span>
-                                <span class="text-sm font-medium text-slate-900">비밀번호 변경</span>
-                            </a>
-                            <div class="p-4">
-                                <form action="{% url 'logout' %}" method="post">{% csrf_token %}
-                                    <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors">
-                                        로그아웃
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </header>
-            {% endif %}
 
-            <div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth bg-[#f8fafc]">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
                  <!-- Messages -->
                  {% if messages %}
-                 <div class="max-w-[1400px] mx-auto mb-4">
+                 <div class="max-w-[1200px] mx-auto mb-6">
                      {% for message in messages %}
-                     <div class="p-4 mb-4 text-sm rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-green-50 text-green-800{% endif %}" role="alert">
-                         <span class="font-medium">
-                            {% if message.tags == 'error' %}Error!{% else %}Success!{% endif %}
-                         </span> {{ message }}
+                     <div class="p-4 text-sm rounded-xl flex items-center gap-3 {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-100{% else %}bg-emerald-50 text-emerald-700 border border-emerald-100{% endif %}">
+                         <span class="material-symbols-outlined text-sm">{% if message.tags == 'error' %}error{% else %}check_circle{% endif %}</span>
+                         <p class="font-medium">{{ message }}</p>
                      </div>
                      {% endfor %}
                  </div>
                  {% endif %}
 
                 <!-- Content Block -->
-                <div class="max-w-[1400px] mx-auto flex flex-col gap-8">
-                    {% block content %}
-                    <!-- Default Content if not overridden -->
-                    <div class="flex flex-col gap-1">
-                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">{% block page_name %}Default Page{% endblock %}</h1>
-                    </div>
-                    {% endblock %}
+                <div class="max-w-[1200px] mx-auto">
+                    {% block content %}{% endblock %}
                 </div>
             </div>
         </main>
@@ -479,22 +110,9 @@
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
-    <!-- Include other scripts if necessary, but be wary of Tailwind conflict with Bootstrap JS -->
-    <script src="{% static 'js/summernote-lite.js' %}"></script>
-    <script src="{% static 'js/lang/summernote-ko-KR.js' %}"></script>
-    
     <script>
         window.csrfToken = '{{ csrf_token }}';
         $(document).ready(function () {
-            $.ajaxSetup({
-                beforeSend: function (xhr, settings) {
-                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                        xhr.setRequestHeader("X-CSRFToken", $('[name=csrfmiddlewaretoken]').val() || window.csrfToken);
-                    }
-                }
-            });
-
             // Mobile Menu Toggle
             const sidebar = $('#sidebar');
             const backdrop = $('#sidebarBackdrop');
@@ -503,87 +121,20 @@
             function toggleMobileMenu() {
                 sidebar.toggleClass('-translate-x-full');
                 backdrop.toggleClass('hidden');
-                $('body').toggleClass('overflow-hidden');
             }
 
             mobileBtn.click(toggleMobileMenu);
             backdrop.click(toggleMobileMenu);
 
-            // Accordion Logic (Single Open)
-            $('.accordion-btn').click(function() {
-                const currentItem = $(this).closest('.accordion-item');
-                const isOpen = currentItem.hasClass('accordion-open');
-
-                // Close all other accordions
-                $('.accordion-item').not(currentItem).removeClass('accordion-open');
-
-                // Toggle current accordion
-                currentItem.toggleClass('accordion-open');
-            });
-
-            // Notification dropdown toggle
-            $('#notificationBtn').click(function(e) {
-                e.stopPropagation();
-                $('#notificationDropdown').toggleClass('hidden');
-                $('#userDropdown').addClass('hidden');
-            });
-
-            // User dropdown toggle
-            $('#userBtn').click(function(e) {
-                e.stopPropagation();
-                $('#userDropdown').toggleClass('hidden');
-                $('#notificationDropdown').addClass('hidden');
-            });
-
-            // Close dropdowns when clicking outside
-            $(document).click(function() {
-                $('#notificationDropdown').addClass('hidden');
-                $('#userDropdown').addClass('hidden');
-            });
-
             // Active Menu Highlighting
             const currentPath = window.location.pathname;
             $('#sidebar a').each(function() {
                 const href = $(this).attr('href');
-                if (href) {
-                    const hrefPath = href.split('?')[0];
-                    if (currentPath === hrefPath || (hrefPath !== '/' && currentPath.startsWith(hrefPath))) {
-                        $(this).addClass('nav-link-active');
-                        
-                        // If it's a sub-menu item, open the parent accordion
-                        const parentAccordion = $(this).closest('.accordion-item');
-                        if (parentAccordion.length) {
-                            parentAccordion.addClass('accordion-open');
-                        }
-                    }
+                if (href && (currentPath === href || (href !== '/' && currentPath.startsWith(href)))) {
+                    $(this).addClass('nav-link-active');
                 }
-            });
-
-            // Prevent dropdown from closing when clicking inside
-            $('#notificationDropdown, #userDropdown').click(function(e) {
-                e.stopPropagation();
             });
         });
-
-        // Mark all notifications as read function
-        function markAllNotificationsRead() {
-            fetch('{% url "notifications:mark_all_read" %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': window.csrfToken,
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
     </script>
     {% block extra_js %}{% endblock %}
 </body>

@@ -1,0 +1,374 @@
+INFO 2026-04-01 12:55:39,444 autoreload 7 138802822097792 Watching for file changes with StatReloader
+INFO 2026-04-01 12:56:08,344 basehttp 7 138801998534336 "GET / HTTP/1.1" 301 0
+INFO 2026-04-01 12:56:08,519 basehttp 7 138801998534336 "GET /dashboard/ HTTP/1.1" 302 0
+INFO 2026-04-01 12:56:08,966 basehttp 7 138801998534336 "GET /accounts/login/?next=/dashboard/ HTTP/1.1" 200 16817
+INFO 2026-04-01 12:56:19,816 basehttp 7 138801998534336 "POST /accounts/login/?next=/dashboard/ HTTP/1.1" 302 0
+INFO 2026-04-01 12:56:20,172 basehttp 7 138801998534336 "GET /dashboard/ HTTP/1.1" 200 73662
+INFO 2026-04-01 12:56:20,336 basehttp 7 138801998534336 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-04-01 12:56:27,630 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 12:56:31,382 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 57152
+INFO 2026-04-01 12:56:33,688 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=3ec16e3a-50f3-47a7-afab-078d08ec45ee HTTP/1.1" 200 82
+INFO 2026-04-01 12:56:34,506 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=2c0bc51f-f757-4759-b7f7-15440fcd8d3d HTTP/1.1" 200 82
+INFO 2026-04-01 12:56:35,095 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=b693d515-4de5-4d50-9dd8-c3d8d5774de1 HTTP/1.1" 200 82
+INFO 2026-04-01 12:56:35,767 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=d9d80ffa-1641-48f5-a65b-d3796152536a HTTP/1.1" 200 82
+INFO 2026-04-01 12:56:36,997 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 12:56:41,799 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 57152
+INFO 2026-04-01 12:56:43,562 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=3ec16e3a-50f3-47a7-afab-078d08ec45ee HTTP/1.1" 200 82
+INFO 2026-04-01 12:56:46,748 basehttp 7 138801998534336 "GET /vbpm/4/editor_v3/ HTTP/1.1" 200 89307
+INFO 2026-04-01 12:56:48,930 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 12:56:52,085 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 57152
+INFO 2026-04-01 12:56:53,810 basehttp 7 138801998534336 "GET /vbpm/api/history/?workflow=4 HTTP/1.1" 200 25352
+INFO 2026-04-01 12:57:06,060 basehttp 7 138801998534336 "GET /vbpm/4/editor_v3/ HTTP/1.1" 200 89307
+INFO 2026-04-01 12:57:09,930 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=7486e907-b7fc-4c9b-9c91-5246a1aa76ca HTTP/1.1" 200 82
+INFO 2026-04-01 12:57:39,547 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=7486e907-b7fc-4c9b-9c91-5246a1aa76ca HTTP/1.1" 200 82
+INFO 2026-04-01 12:57:41,001 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=7486e907-b7fc-4c9b-9c91-5246a1aa76ca HTTP/1.1" 200 82
+INFO 2026-04-01 12:57:48,273 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=3ec16e3a-50f3-47a7-afab-078d08ec45ee HTTP/1.1" 200 82
+INFO 2026-04-01 12:57:56,199 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=7486e907-b7fc-4c9b-9c91-5246a1aa76ca HTTP/1.1" 200 82
+ERROR 2026-04-01 12:58:19,669 log 7 138801998534336 Internal Server Error: /vbpm/api/workflows/4/save_x6/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "7.1"
+LINE 1: ...ption", "created_at", "created_by_id") VALUES (4, '7.1', '{"...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/vbpm/views.py", line 307, in save_x6
+    version = _create_workflow_history(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/vbpm/views.py", line 202, in _create_workflow_history
+    WorkflowHistory.objects.create(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 892, in save
+    self.save_base(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 998, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1161, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1202, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.DataError: invalid input syntax for type integer: "7.1"
+LINE 1: ...ption", "created_at", "created_by_id") VALUES (4, '7.1', '{"...
+                                                             ^
+
+ERROR 2026-04-01 12:58:19,691 basehttp 7 138801998534336 "POST /vbpm/api/workflows/4/save_x6/ HTTP/1.1" 500 216382
+INFO 2026-04-01 13:05:09,836 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 13:05:12,592 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 59003
+INFO 2026-04-01 13:05:15,510 basehttp 7 138801998534336 "GET /vbpm/4/editor_v3/ HTTP/1.1" 200 91158
+INFO 2026-04-01 13:05:19,689 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=77003e4a-1180-46e8-9581-d3c69afbfc6d HTTP/1.1" 200 82
+INFO 2026-04-01 13:05:38,271 basehttp 7 138801998534336 "POST /vbpm/api/workflows/4/save_x6/ HTTP/1.1" 200 37
+INFO 2026-04-01 13:05:38,320 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 60580
+INFO 2026-04-01 13:05:43,024 basehttp 7 138801998534336 "GET /vbpm/api/history/?workflow=4 HTTP/1.1" 200 33546
+INFO 2026-04-01 13:05:49,745 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 13:05:53,707 basehttp 7 138801998534336 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 60580
+INFO 2026-04-01 13:05:58,451 basehttp 7 138801998534336 "GET /vbpm/api/history/?workflow=4 HTTP/1.1" 200 33546
+INFO 2026-04-01 13:06:14,055 basehttp 7 138801998534336 "GET /vbpm/4/editor_v3/ HTTP/1.1" 200 92734
+INFO 2026-04-01 13:06:20,984 basehttp 7 138801998534336 "GET /vbpm/api/workflows/4/lf_node_detail/?node_id=7486e907-b7fc-4c9b-9c91-5246a1aa76ca HTTP/1.1" 200 82
+INFO 2026-04-01 13:06:23,983 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 59187
+INFO 2026-04-01 13:06:37,104 basehttp 7 138801998534336 "DELETE /vbpm/api/workflows/3/ HTTP/1.1" 204 0
+INFO 2026-04-01 13:06:37,204 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 56868
+INFO 2026-04-01 13:06:40,629 basehttp 7 138801998534336 "GET /vbpm/1/viewer_v3/ HTTP/1.1" 200 52604
+INFO 2026-04-01 13:06:43,365 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 56868
+INFO 2026-04-01 13:14:35,066 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51460
+INFO 2026-04-01 13:14:36,898 basehttp 7 138801998534336 "GET /worklog/ HTTP/1.1" 200 51531
+INFO 2026-04-01 13:14:38,140 basehttp 7 138801998534336 "GET /reports/ HTTP/1.1" 200 64869
+INFO 2026-04-01 13:14:40,147 basehttp 7 138801998534336 "GET /reports/weekly/13/ HTTP/1.1" 200 67711
+INFO 2026-04-01 13:14:43,339 basehttp 7 138801998534336 "GET /worklog/ HTTP/1.1" 200 51531
+INFO 2026-04-01 13:14:49,920 views 7 138801998534336 WorklogCreateView GET: user=230004, year=2026, week=15
+INFO 2026-04-01 13:14:49,927 forms 7 138801998534336 WorklogForm __init__ called with args: 0, kwargs: ['initial', 'prefix', 'instance'], user: 230004
+INFO 2026-04-01 13:14:49,929 forms 7 138801998534336 Set initial display_order from profile: 1
+INFO 2026-04-01 13:14:49,930 forms 7 138801998534336 WorklogForm initialized successfully
+INFO 2026-04-01 13:14:50,006 basehttp 7 138801998534336 "GET /worklog/create/2026/15/ HTTP/1.1" 200 69018
+INFO 2026-04-01 13:14:50,856 basehttp 7 138801998534336 "GET /static/css/font/summernote.woff2 HTTP/1.1" 200 6156
+INFO 2026-04-01 13:14:53,702 basehttp 7 138801998534336 "GET /worklog/api/copy/24/ HTTP/1.1" 200 9203
+INFO 2026-04-01 13:14:56,547 views 7 138801998534336 WorklogCreateView POST: user=230004
+INFO 2026-04-01 13:14:56,548 views 7 138801998534336 POST data: <QueryDict: {'csrfmiddlewaretoken': ['R8nghtG2GpgJST3PaaLuFTFdwx7tdd91MeegYYyIj3wW6WZg2IoiL3I1Q7EEIW9c'], 'this_week_work': ['<p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><span style="font-weight: bolder;">◆ 대고객 서비스 플랫폼 오픈 지원(~12/22)</span></p><div style="color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><p style="margin-bottom: 0px; line-height: 1.2;">&nbsp; - 시범운영/그랜드 오픈 일정 및 체크리스트 협의,작성</p><p style="margin-bottom: 0px; line-height: 1.2;">&nbsp; - 미진사항 점검 및 수행</p><p style="margin-bottom: 0px; line-height: 1.2;"><br></p></div><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><span style="font-weight: bolder;">◆ SAP 권한관리체계 수립(~12월)</span></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;">&nbsp; - Advanced User Type 분석 및 정리(~11월, 지연)</p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;">&nbsp; - 권한관리 현황 보고(본부장님)서 초안 작성</p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><br></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ S/4HANA 전환 검토</span></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;">&nbsp; - 검토내용 1차 보고(지연)</p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><br></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ 조직개편에 따른 시스템 반영(~12/5)</span></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;">&nbsp; - 12/5자 조직개편 지원 및 검수</p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><br></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ 내부통제 하반기 운영평가(~12월)</span></p><p style="margin-bottom: 0px; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; line-height: 1.2;">&nbsp; - 사전 준비사항 및 일정 협의</p>'], 'files': ['', ''], 'next_week_plan': ['<p style="margin-bottom: 0px;"><span style="font-weight: bolder;">◆ 대고객 서비스 플랫폼 오픈 지원(~12/22)</span></p><div><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 시범운영 오픈 준비 및 점검</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 미진사항 점검 및 수행</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><br></p></div><p style="margin-bottom: 0px;"><span style="font-weight: bolder;">◆ SAP 권한관리체계 수립(~12월)</span></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - Advanced User Type 분석 및 정리(~11월, 지연)</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 권한관리 현황 보고(본부장님)</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 미사용 T-code 정리(~12월3W)</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><br></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ S/4HANA 전환 검토</span></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 검토내용 1차 보고(지연)</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 타사 현황 검토</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><br></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ 조직개편에 따른 시스템 반영 후속처리</span></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 조직개편 작업 후속 모니터링 및 처리</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><br></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><span style="color: rgb(0, 0, 0); font-family: sans-serif; font-weight: bolder;">◆ 내부통제 하반기 운영평가(~12월)</span></p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;">&nbsp; - 모집단 추출 및 제출</p><p style="margin-bottom: 0px; line-height: 1.2; color: rgb(33, 37, 41); font-family: &quot;Noto Sans KR&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;"><br></p>'], 'display_order': ['1']}>
+INFO 2026-04-01 13:14:56,548 forms 7 138801998534336 WorklogForm __init__ called with args: 0, kwargs: ['initial', 'prefix', 'data', 'files', 'instance'], user: 230004
+INFO 2026-04-01 13:14:56,549 forms 7 138801998534336 Set initial display_order from profile: 1
+INFO 2026-04-01 13:14:56,550 forms 7 138801998534336 WorklogForm initialized successfully
+INFO 2026-04-01 13:14:56,551 views 7 138801998534336 form_valid called for user: 230004
+INFO 2026-04-01 13:14:56,552 views 7 138801998534336 Setting year=2026, week=15
+INFO 2026-04-01 13:14:56,553 views 7 138801998534336 Using form display_order: 1
+INFO 2026-04-01 13:14:56,553 views 7 138801998534336 Calling super().form_valid()
+INFO 2026-04-01 13:14:56,554 forms 7 138801998534336 WorklogForm save called, commit=True
+INFO 2026-04-01 13:14:56,555 forms 7 138801998534336 Instance created: author=230004, year=2026, week=15
+INFO 2026-04-01 13:14:56,573 forms 7 138801998534336 Instance saved to database
+INFO 2026-04-01 13:14:56,592 views 7 138801998534336 Worklog created successfully
+INFO 2026-04-01 13:14:56,598 basehttp 7 138801998534336 "POST /worklog/create/2026/15/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:14:56,705 basehttp 7 138801998534336 "GET /worklog/ HTTP/1.1" 200 52346
+INFO 2026-04-01 13:23:25,223 basehttp 7 138801998534336 "GET /reports/ HTTP/1.1" 200 64871
+INFO 2026-04-01 13:23:26,964 basehttp 7 138801998534336 "GET /reports/weekly/14/ HTTP/1.1" 200 67564
+INFO 2026-04-01 13:23:30,330 basehttp 7 138801998534336 "GET /worklog/ HTTP/1.1" 200 51893
+INFO 2026-04-01 13:23:32,034 forms 7 138801998534336 WorklogForm __init__ called with args: 0, kwargs: ['initial', 'prefix', 'instance'], user: None
+INFO 2026-04-01 13:23:32,035 forms 7 138801998534336 WorklogForm initialized successfully
+INFO 2026-04-01 13:23:32,085 basehttp 7 138801998534336 "GET /worklog/25/update/ HTTP/1.1" 200 75870
+INFO 2026-04-01 13:23:37,069 basehttp 7 138801998534336 "GET /worklog/25/ HTTP/1.1" 200 69548
+INFO 2026-04-01 13:23:50,023 basehttp 7 138801998534336 "POST /worklog/25/upload/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:23:50,092 basehttp 7 138801998534336 "GET /worklog/25/ HTTP/1.1" 200 71003
+INFO 2026-04-01 13:23:52,201 basehttp 7 138801998534336 "GET /reports/ HTTP/1.1" 200 64871
+INFO 2026-04-01 13:23:53,617 basehttp 7 138801998534336 "GET /reports/weekly/14/ HTTP/1.1" 200 68899
+INFO 2026-04-01 13:25:03,268 basehttp 7 138801998534336 "GET /reports/popup/2026/15/?team=1 HTTP/1.1" 200 16323
+WARNING 2026-04-01 13:25:03,521 log 7 138801998534336 Not Found: /favicon.ico
+WARNING 2026-04-01 13:25:03,523 basehttp 7 138801998534336 "GET /favicon.ico HTTP/1.1" 404 6672
+INFO 2026-04-01 13:25:33,002 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51460
+INFO 2026-04-01 13:25:36,117 basehttp 7 138801998534336 "GET /task/7/ HTTP/1.1" 200 56823
+INFO 2026-04-01 13:25:51,826 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51460
+INFO 2026-04-01 13:25:55,908 basehttp 7 138801998534336 "GET /monitor/ops/logs/ HTTP/1.1" 200 58544
+INFO 2026-04-01 13:26:00,557 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51460
+INFO 2026-04-01 13:26:12,216 basehttp 7 138801998534336 "GET /vbpm/ HTTP/1.1" 200 56868
+INFO 2026-04-01 13:27:22,046 basehttp 7 138801998534336 "GET /service/reception/ HTTP/1.1" 200 51485
+INFO 2026-04-01 13:27:23,705 basehttp 7 138801998534336 "GET /service/reception/24 HTTP/1.1" 200 57564
+INFO 2026-04-01 13:27:29,426 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51460
+INFO 2026-04-01 13:27:31,471 basehttp 7 138801998534336 "GET /task/7/ HTTP/1.1" 200 56823
+INFO 2026-04-01 13:27:35,696 basehttp 7 138801998534336 "GET /task/7/update/ HTTP/1.1" 200 69631
+INFO 2026-04-01 13:27:39,388 basehttp 7 138801998534336 "GET /useraccounts/ajax/users/search/?q=&team_id=&page=1&page_size=10 HTTP/1.1" 200 416
+INFO 2026-04-01 13:27:45,763 basehttp 7 138801998534336 "POST /task/7/update/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:27:45,852 basehttp 7 138801998534336 "GET /task/ HTTP/1.1" 200 64819
+INFO 2026-04-01 13:29:23,153 basehttp 7 138801998534336 "GET /task/8/ HTTP/1.1" 200 58335
+INFO 2026-04-01 13:29:28,326 basehttp 7 138801998534336 "GET /task/8/update/ HTTP/1.1" 200 69904
+INFO 2026-04-01 13:29:30,793 basehttp 7 138801998534336 "GET /useraccounts/ajax/users/search/?q=&team_id=1&page=1&page_size=10 HTTP/1.1" 200 416
+INFO 2026-04-01 13:29:35,856 basehttp 7 138801998534336 "POST /task/8/update/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:29:35,962 basehttp 7 138801998534336 "GET /task/ HTTP/1.1" 200 65215
+INFO 2026-04-01 13:29:40,628 basehttp 7 138801998534336 "GET /task/8/ HTTP/1.1" 200 59087
+INFO 2026-04-01 13:29:59,855 basehttp 7 138801998534336 "POST /task/8/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:29:59,994 basehttp 7 138801998534336 "GET /task/8/ HTTP/1.1" 200 60693
+INFO 2026-04-01 13:55:24,186 basehttp 7 138801998534336 "GET /task/?status=in_progress HTTP/1.1" 200 51856
+INFO 2026-04-01 13:55:27,994 basehttp 7 138801998534336 "GET /task/6/ HTTP/1.1" 200 54693
+INFO 2026-04-01 13:55:32,502 basehttp 7 138801998534336 "GET /task/6/update/ HTTP/1.1" 200 68388
+INFO 2026-04-01 13:55:34,409 basehttp 7 138801998534336 "GET /useraccounts/ajax/users/search/?q=&team_id=1&page=1&page_size=10 HTTP/1.1" 200 416
+INFO 2026-04-01 13:55:38,694 basehttp 7 138801998534336 "POST /task/6/update/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:55:38,788 basehttp 7 138801998534336 "GET /task/ HTTP/1.1" 200 65611
+INFO 2026-04-01 13:56:41,994 autoreload 7 138802822097792 /app/common/message_views.py changed, reloading.
+INFO 2026-04-01 13:56:49,162 autoreload 77 130695918234496 Watching for file changes with StatReloader
+INFO 2026-04-01 13:57:01,885 basehttp 77 130695095719616 "GET /task/6/ HTTP/1.1" 200 55305
+INFO 2026-04-01 13:57:13,342 basehttp 77 130695095719616 "POST /task/6/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 13:57:13,469 basehttp 77 130695095719616 "GET /task/6/ HTTP/1.1" 200 56864
+INFO 2026-04-01 14:11:32,175 autoreload 77 130695918234496 /app/common/message_views.py changed, reloading.
+INFO 2026-04-01 14:11:37,912 autoreload 92 125035572423552 Watching for file changes with StatReloader
+INFO 2026-04-01 14:12:25,167 basehttp 92 125034748942016 "POST /task/6/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:12:25,414 basehttp 92 125034748942016 "GET /task/6/ HTTP/1.1" 200 57992
+INFO 2026-04-01 14:16:16,754 autoreload 92 125035572423552 /app/common/message_views.py changed, reloading.
+INFO 2026-04-01 14:16:22,974 autoreload 107 137123836390272 Watching for file changes with StatReloader
+INFO 2026-04-01 14:16:38,220 autoreload 107 137123836390272 /app/common/message_views.py changed, reloading.
+INFO 2026-04-01 14:16:44,597 autoreload 120 127057537203072 Watching for file changes with StatReloader
+INFO 2026-04-01 14:17:20,269 autoreload 120 127057537203072 /app/common/message_views.py changed, reloading.
+INFO 2026-04-01 14:17:25,508 autoreload 133 136379985451904 Watching for file changes with StatReloader
+INFO 2026-04-01 14:17:49,166 basehttp 133 136379161888448 "GET /task/planner/ HTTP/1.1" 200 77033
+INFO 2026-04-01 14:17:51,079 basehttp 133 136379161888448 "GET /task/?status=in_progress HTTP/1.1" 200 52252
+INFO 2026-04-01 14:17:52,668 autoreload 133 136379985451904 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:17:57,187 autoreload 148 130460962597760 Watching for file changes with StatReloader
+INFO 2026-04-01 14:18:04,667 basehttp 148 130460140115648 "GET /task/6/ HTTP/1.1" 200 57561
+ERROR 2026-04-01 14:18:13,604 log 148 130460140115648 Internal Server Error: /task/6/comment/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/task/views.py", line 392, in add_comment
+    notify_comment_added(task, request.user)
+  File "/app/notifications/utils.py", line 144, in notify_comment_added
+    _send_kakao_box_message(assigned_user, kakao_message, "댓글 확인하기", _task_url(task))
+TypeError: _send_kakao_box_message() missing 1 required positional argument: 'button_url'
+ERROR 2026-04-01 14:18:13,626 basehttp 148 130460140115648 "POST /task/6/comment/ HTTP/1.1" 500 83747
+INFO 2026-04-01 14:19:20,728 autoreload 148 130460962597760 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:19:26,923 autoreload 163 131724554402688 Watching for file changes with StatReloader
+INFO 2026-04-01 14:20:26,016 autoreload 163 131724554402688 /app/monitor/views.py changed, reloading.
+INFO 2026-04-01 14:20:31,702 autoreload 176 127018249620352 Watching for file changes with StatReloader
+INFO 2026-04-01 14:21:07,831 basehttp 176 127017426110144 "POST /task/6/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:21:08,238 basehttp 176 127017426110144 "GET /task/6/ HTTP/1.1" 200 60272
+INFO 2026-04-01 14:21:32,210 basehttp 176 127017426110144 "GET /task/?status=in_progress HTTP/1.1" 200 52252
+INFO 2026-04-01 14:21:35,077 basehttp 176 127017426110144 "GET /task/6/ HTTP/1.1" 200 59841
+INFO 2026-04-01 14:22:00,777 autoreload 176 127018249620352 /app/monitor/views.py changed, reloading.
+INFO 2026-04-01 14:22:06,228 autoreload 191 127355101907840 Watching for file changes with StatReloader
+INFO 2026-04-01 14:22:20,259 basehttp 191 127354279392960 "GET /notifications/read/9/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:22:20,674 basehttp 191 127354279392960 "GET /task/2/ HTTP/1.1" 200 54902
+INFO 2026-04-01 14:22:23,107 basehttp 191 127354279392960 "GET /task/ HTTP/1.1" 200 65164
+INFO 2026-04-01 14:22:28,264 basehttp 191 127354279392960 "GET /task/?status=in_progress HTTP/1.1" 200 52252
+INFO 2026-04-01 14:27:01,880 autoreload 191 127355101907840 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:27:07,142 autoreload 206 131556335348608 Watching for file changes with StatReloader
+INFO 2026-04-01 14:27:17,373 basehttp 206 131555512833728 "GET /task/6/ HTTP/1.1" 200 59841
+INFO 2026-04-01 14:27:33,217 basehttp 206 131555512833728 "POST /task/6/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:27:33,371 basehttp 206 131555512833728 "GET /task/6/ HTTP/1.1" 200 61413
+INFO 2026-04-01 14:35:51,199 autoreload 206 131556335348608 /app/task/views.py changed, reloading.
+INFO 2026-04-01 14:35:56,469 autoreload 221 123875132345216 Watching for file changes with StatReloader
+INFO 2026-04-01 14:37:28,824 autoreload 221 123875132345216 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:37:32,965 autoreload 234 125553580891008 Watching for file changes with StatReloader
+INFO 2026-04-01 14:37:42,034 basehttp 234 125552750020288 "GET /task/6/ HTTP/1.1" 200 60982
+INFO 2026-04-01 14:37:42,654 basehttp 234 125552750020288 "GET /task/6/ HTTP/1.1" 200 60982
+INFO 2026-04-01 14:38:15,825 basehttp 234 125552750020288 "POST /task/6/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:38:15,945 basehttp 234 125552750020288 "GET /task/6/ HTTP/1.1" 200 62683
+INFO 2026-04-01 14:42:09,796 autoreload 234 125553580891008 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:42:15,581 autoreload 249 127112066497408 Watching for file changes with StatReloader
+INFO 2026-04-01 14:43:40,643 autoreload 249 127112066497408 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:43:46,539 autoreload 262 126512591473536 Watching for file changes with StatReloader
+INFO 2026-04-01 14:44:11,178 basehttp 262 126511767975616 "GET /task/ HTTP/1.1" 200 65164
+INFO 2026-04-01 14:44:15,341 basehttp 262 126511767975616 "GET /task/5/ HTTP/1.1" 200 53496
+INFO 2026-04-01 14:44:47,181 basehttp 262 126511767975616 "POST /task/5/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:44:47,313 basehttp 262 126511767975616 "GET /task/5/ HTTP/1.1" 200 54958
+INFO 2026-04-01 14:45:19,468 basehttp 262 126511767975616 "POST /task/5/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:45:19,635 basehttp 262 126511767975616 "GET /task/5/ HTTP/1.1" 200 56253
+INFO 2026-04-01 14:46:14,529 autoreload 262 126512591473536 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:46:23,681 autoreload 278 124387564821376 Watching for file changes with StatReloader
+INFO 2026-04-01 14:46:43,876 basehttp 278 124386741270208 "POST /task/5/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:46:44,201 basehttp 278 124386741270208 "GET /task/5/ HTTP/1.1" 200 57548
+INFO 2026-04-01 14:47:10,582 basehttp 278 124386741270208 "GET /task/5/update/ HTTP/1.1" 200 68372
+INFO 2026-04-01 14:47:12,764 basehttp 278 124386741270208 "GET /useraccounts/ajax/users/search/?q=&team_id=1&page=1&page_size=10 HTTP/1.1" 200 416
+INFO 2026-04-01 14:47:18,098 basehttp 278 124386741270208 "POST /task/5/update/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:47:18,264 basehttp 278 124386741270208 "GET /task/ HTTP/1.1" 200 66007
+INFO 2026-04-01 14:47:30,492 basehttp 278 124386741270208 "GET /task/5/ HTTP/1.1" 200 57729
+INFO 2026-04-01 14:47:36,186 basehttp 278 124386741270208 "POST /task/5/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:47:36,342 basehttp 278 124386741270208 "GET /task/5/ HTTP/1.1" 200 59455
+INFO 2026-04-01 14:48:19,664 autoreload 278 124387564821376 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:48:25,889 autoreload 293 128336830544768 Watching for file changes with StatReloader
+INFO 2026-04-01 14:48:53,539 autoreload 293 128336830544768 /app/notifications/utils.py changed, reloading.
+INFO 2026-04-01 14:49:01,397 autoreload 306 130927016786816 Watching for file changes with StatReloader
+INFO 2026-04-01 14:49:14,552 basehttp 306 130926193243840 "GET /task/ HTTP/1.1" 200 65560
+INFO 2026-04-01 14:49:16,745 basehttp 306 130926193243840 "GET /task/7/ HTTP/1.1" 200 57435
+INFO 2026-04-01 14:49:53,746 basehttp 306 130926193243840 "POST /task/7/comment/ HTTP/1.1" 302 0
+INFO 2026-04-01 14:49:53,836 basehttp 306 130926193243840 "GET /task/7/ HTTP/1.1" 200 59113
+INFO 2026-04-01 14:50:39,996 basehttp 306 130926193243840 "GET /task/?status=in_progress HTTP/1.1" 200 52252
+INFO 2026-04-01 14:50:45,550 basehttp 306 130926193243840 "GET /task/?status=in_progress HTTP/1.1" 200 52252
+INFO 2026-04-01 14:50:50,546 basehttp 306 130926193243840 "GET /dashboard/ HTTP/1.1" 200 73662
+INFO 2026-04-01 14:53:10,781 basehttp 306 130926184851136 "GET /vbpm/ HTTP/1.1" 200 56868
+INFO 2026-04-01 14:53:12,435 basehttp 306 130926184851136 "GET /vbpm/4/viewer_v3/ HTTP/1.1" 200 60579
+INFO 2026-04-01 14:53:14,663 basehttp 306 130926184851136 "GET /vbpm/api/history/?workflow=4 HTTP/1.1" 200 33546
+INFO 2026-04-01 14:59:13,506 autoreload 306 130927016786816 /app/vbpm/serializers.py changed, reloading.
+INFO 2026-04-01 14:59:18,939 autoreload 324 124284774071168 Watching for file changes with StatReloader
+INFO 2026-04-01 15:12:59,744 basehttp 324 124283949532864 "GET /vbpm/api/history/?workflow=4 HTTP/1.1" 200 33506
+INFO 2026-04-01 15:13:10,500 basehttp 324 124283949532864 "GET /vbpm/ HTTP/1.1" 200 56868
+INFO 2026-04-01 15:13:15,076 basehttp 324 124283949532864 "GET /reports/ HTTP/1.1" 200 64871
+INFO 2026-04-01 15:13:16,445 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68899
+INFO 2026-04-01 15:14:35,957 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68901
+INFO 2026-04-01 15:15:02,127 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68896
+INFO 2026-04-01 15:15:28,974 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:15:31,741 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:15:54,680 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:16:33,410 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:27:45,330 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68877
+INFO 2026-04-01 15:27:48,179 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68877
+INFO 2026-04-01 15:28:32,775 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:29:10,326 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68878
+INFO 2026-04-01 15:29:31,616 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68872
+INFO 2026-04-01 15:29:33,648 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68872
+INFO 2026-04-01 15:30:23,861 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68811
+INFO 2026-04-01 15:34:27,428 basehttp 324 124283949532864 "GET /reports/weekly/14/ HTTP/1.1" 200 68826
+INFO 2026-04-01 15:34:45,558 basehttp 324 124283949532864 "GET /reports/popup/2026/15/?team=1 HTTP/1.1" 200 16323
+INFO 2026-04-01 16:17:11,807 basehttp 324 124283949532864 "GET /dashboard/ HTTP/1.1" 200 73662
+INFO 2026-04-01 16:17:22,436 basehttp 324 124283949532864 "GET /dashboard/ HTTP/1.1" 200 73662
+INFO 2026-04-01 16:30:26,411 basehttp 324 124283949532864 "GET /task/planner/roadmap/ HTTP/1.1" 200 71980
+INFO 2026-04-10 13:46:20,066 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:46:20,070 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 13:46:20,317 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.163s)
+INFO 2026-04-10 13:47:23,141 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:47:23,142 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 13:47:23,327 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.162s)
+INFO 2026-04-10 13:51:23,143 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:51:23,145 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 13:51:23,475 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.225s)
+INFO 2026-04-10 13:52:24,544 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:52:24,547 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 13:52:24,673 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.102s)
+INFO 2026-04-10 13:56:27,638 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:56:27,640 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 13:56:27,886 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.200s)
+INFO 2026-04-10 13:57:27,649 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 13:57:27,652 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 13:57:27,808 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.127s)
+INFO 2026-04-10 14:01:30,841 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:01:30,842 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:01:31,364 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.468s)
+INFO 2026-04-10 14:02:30,842 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:02:30,843 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:02:30,982 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.119s)
+INFO 2026-04-10 14:06:35,429 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:06:35,431 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:06:35,840 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.348s)
+INFO 2026-04-10 14:07:35,445 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:07:35,447 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:07:35,665 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.170s)
+INFO 2026-04-10 14:11:38,107 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:11:38,109 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:11:40,384 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (2.202s)
+INFO 2026-04-10 14:12:38,117 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:12:38,118 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:12:38,401 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.264s)
+INFO 2026-04-10 14:16:39,564 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:16:39,567 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:16:39,936 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.303s)
+INFO 2026-04-10 14:17:39,581 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:17:39,583 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:17:39,825 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.197s)
+INFO 2026-04-10 14:21:41,065 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:21:41,066 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:21:41,283 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.157s)
+INFO 2026-04-10 14:22:44,208 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:22:44,210 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:22:44,374 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.132s)
+INFO 2026-04-10 14:26:44,212 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:26:44,213 tasks 26 129880832918272 Triggering monitor check for target ID: 3
+INFO 2026-04-10 14:26:44,592 utils 26 129880832918272 Monitoring [UP] 삼천리 홈페이지 (0.315s)
+INFO 2026-04-10 14:27:45,710 tasks 25 129880832918272 Triggered check for 1 sites due for monitoring.
+INFO 2026-04-10 14:27:45,712 tasks 26 129880832918272 Triggering monitor check for target ID: 2
+INFO 2026-04-10 14:27:45,946 utils 26 129880832918272 Monitoring [UP] 도시가스고객센터 (0.175s)

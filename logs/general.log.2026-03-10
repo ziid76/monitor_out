@@ -1,0 +1,636 @@
+INFO 2026-03-10 13:51:58,433 autoreload 7 133254328494976 Watching for file changes with StatReloader
+INFO 2026-03-10 13:52:25,964 basehttp 7 133253506033344 "GET / HTTP/1.1" 301 0
+INFO 2026-03-10 13:52:26,183 basehttp 7 133253506033344 "GET /dashboard/ HTTP/1.1" 302 0
+INFO 2026-03-10 13:52:26,679 basehttp 7 133253506033344 "GET /accounts/login/?next=/dashboard/ HTTP/1.1" 200 16817
+INFO 2026-03-10 13:52:27,327 basehttp 7 133253495543488 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 13:52:27,357 basehttp 7 133253506033344 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 13:52:27,892 basehttp 7 133253506033344 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 13:52:28,171 basehttp 7 133253495543488 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 13:52:28,622 basehttp 7 133253506033344 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 13:52:30,473 basehttp 7 133253506033344 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 13:52:36,723 basehttp 7 133253506033344 "POST /accounts/login/?next=/dashboard/ HTTP/1.1" 302 0
+INFO 2026-03-10 13:52:36,984 basehttp 7 133253506033344 "GET /dashboard/ HTTP/1.1" 200 73665
+INFO 2026-03-10 13:52:37,114 basehttp 7 133253506033344 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+ERROR 2026-03-10 13:52:42,434 log 7 133253495543488 Internal Server Error: /vbpm/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "vbpm_workflow" does not exist
+LINE 1: ...updated_at", "vbpm_workflow"."created_by_id" FROM "vbpm_work...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/vbpm/views.py", line 121, in workflow_list
+    return render(request, 'vbpm/workflow_list.html', {'workflows': workflows})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1008, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/defaulttags.py", line 199, in render
+    len_values = len(values)
+                 ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "vbpm_workflow" does not exist
+LINE 1: ...updated_at", "vbpm_workflow"."created_by_id" FROM "vbpm_work...
+                                                             ^
+
+ERROR 2026-03-10 13:52:42,472 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 500 218164
+WARNING 2026-03-10 13:52:42,747 log 7 133253495543488 Not Found: /favicon.ico
+WARNING 2026-03-10 13:52:42,750 basehttp 7 133253495543488 "GET /favicon.ico HTTP/1.1" 404 6672
+INFO 2026-03-10 13:53:12,976 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 41656
+INFO 2026-03-10 13:53:23,983 basehttp 7 133253495543488 "POST /vbpm/api/workflows/ HTTP/1.1" 201 180
+INFO 2026-03-10 13:53:24,016 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 42209
+INFO 2026-03-10 13:53:26,586 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 46745
+WARNING 2026-03-10 13:57:40,055 log 7 133253495543488 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 13:57:40,059 basehttp 7 133253495543488 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 13:57:40,342 basehttp 7 133253495543488 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 14:00:19,668 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 47074
+WARNING 2026-03-10 14:00:19,726 log 7 133253495543488 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 14:00:19,727 basehttp 7 133253495543488 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 14:01:26,527 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 47147
+WARNING 2026-03-10 14:01:26,607 log 7 133253495543488 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 14:01:26,608 basehttp 7 133253495543488 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 14:02:56,383 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 47189
+WARNING 2026-03-10 14:02:56,437 log 7 133253495543488 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 14:02:56,437 basehttp 7 133253495543488 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 14:04:33,541 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 42209
+INFO 2026-03-10 14:04:40,156 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 47189
+INFO 2026-03-10 14:04:57,355 basehttp 7 133253495543488 "POST /vbpm/api/workflows/1/save_diagram/ HTTP/1.1" 200 38
+INFO 2026-03-10 14:04:58,590 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 48080
+INFO 2026-03-10 14:05:04,429 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 42209
+INFO 2026-03-10 14:05:09,031 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 48080
+INFO 2026-03-10 14:15:56,072 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 42209
+INFO 2026-03-10 14:15:58,168 basehttp 7 133253495543488 "GET /vbpm/1/editor/ HTTP/1.1" 200 48080
+INFO 2026-03-10 14:16:28,323 basehttp 7 133253495543488 "GET /vbpm/ HTTP/1.1" 200 42209
+INFO 2026-03-10 15:36:54,834 autoreload 7 133254328494976 /app/vbpm/models.py changed, reloading.
+INFO 2026-03-10 15:36:58,996 autoreload 48 139545363389312 Watching for file changes with StatReloader
+INFO 2026-03-10 15:37:13,342 autoreload 48 139545363389312 /app/vbpm/models.py changed, reloading.
+INFO 2026-03-10 15:37:15,448 autoreload 61 139746864020352 Watching for file changes with StatReloader
+INFO 2026-03-10 15:37:27,027 autoreload 61 139746864020352 /app/vbpm/views.py changed, reloading.
+INFO 2026-03-10 15:37:29,011 autoreload 74 130432381537152 Watching for file changes with StatReloader
+INFO 2026-03-10 15:37:35,825 autoreload 74 130432381537152 /app/vbpm/serializers.py changed, reloading.
+INFO 2026-03-10 15:37:37,807 autoreload 87 130306457590656 Watching for file changes with StatReloader
+INFO 2026-03-10 15:39:43,867 autoreload 87 130306457590656 /app/vbpm/serializers.py changed, reloading.
+INFO 2026-03-10 15:39:45,717 autoreload 100 127770216418176 Watching for file changes with StatReloader
+INFO 2026-03-10 15:41:28,061 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:41:29,847 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:41:32,514 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:41:33,526 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:41:34,536 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:41:35,995 basehttp 100 127769392875200 "GET /vbpm/1/editor_v2/ HTTP/1.1" 200 53774
+INFO 2026-03-10 15:41:56,822 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 42986
+INFO 2026-03-10 15:42:02,986 basehttp 100 127769392875200 "POST /vbpm/api/workflows/ HTTP/1.1" 201 181
+INFO 2026-03-10 15:42:03,021 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:42:05,304 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53775
+WARNING 2026-03-10 15:42:10,733 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:42:10,735 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:42:47,053 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53897
+WARNING 2026-03-10 15:42:47,113 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:42:47,115 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:43:21,229 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:28,427 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:37,875 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:43,492 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:43,945 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:50,171 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:52,959 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:43:54,818 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:04,203 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:05,429 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:06,553 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:07,520 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:08,106 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:09,685 basehttp 100 127769392875200 "POST /vbpm/api/workflows/2/save_logicflow/ HTTP/1.1" 200 40
+INFO 2026-03-10 15:44:16,391 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:17,899 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:25,583 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:28,443 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:31,798 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:34,263 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:38,660 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:39,198 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:48,843 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:55,941 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:57,669 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:44:59,225 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:00,108 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:08,996 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:11,898 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:15,132 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:17,549 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:20,350 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:29,874 basehttp 100 127769392875200 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 100
+INFO 2026-03-10 15:45:31,044 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:45:34,458 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:45:38,923 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:39,786 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:45:41,997 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=ab9f669d-57c3-47c2-a1e1-fbd14824e94d HTTP/1.1" 200 81
+INFO 2026-03-10 15:47:18,553 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53948
+INFO 2026-03-10 15:47:23,052 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:47:25,717 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:47:28,175 basehttp 100 127769392875200 "GET /vbpm/1/editor_v2/ HTTP/1.1" 200 53246
+INFO 2026-03-10 15:47:32,954 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:47:34,457 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53948
+INFO 2026-03-10 15:47:41,653 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:47:43,438 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:47:45,016 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+WARNING 2026-03-10 15:47:49,619 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:47:49,621 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:48:27,611 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53958
+WARNING 2026-03-10 15:48:27,693 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:48:27,695 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:48:29,573 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:48:33,332 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+WARNING 2026-03-10 15:48:33,401 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:48:33,402 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:48:35,451 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 53958
+WARNING 2026-03-10 15:48:35,514 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:48:35,515 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:49:31,989 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 54406
+WARNING 2026-03-10 15:49:32,039 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:49:32,040 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:49:36,592 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:49:39,144 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:49:46,272 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:49:50,138 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:49:53,392 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:49:58,550 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:50:04,758 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:50:07,201 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:50:07,700 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:08,010 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:09,086 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:09,502 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:09,722 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:16,157 basehttp 100 127769392875200 "POST /vbpm/api/workflows/2/save_logicflow/ HTTP/1.1" 200 40
+INFO 2026-03-10 15:50:18,437 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:50:19,794 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 54563
+INFO 2026-03-10 15:50:34,063 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:50:34,753 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:50:35,354 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:50:36,204 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:51:52,601 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:51:54,336 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55449
+INFO 2026-03-10 15:51:59,839 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:00,232 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:01,062 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:01,964 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:03,032 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:07,264 basehttp 100 127769392875200 "POST /vbpm/api/workflows/2/save_logicflow/ HTTP/1.1" 200 40
+INFO 2026-03-10 15:52:09,908 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:52:11,354 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55819
+INFO 2026-03-10 15:52:14,554 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:16,233 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:17,530 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:18,229 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:19,312 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:20,118 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:52:20,687 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:21,727 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:46,124 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:52:46,772 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:47,667 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:48,375 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:48,964 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:49,352 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:49,534 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:50,227 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:52:50,622 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:52:51,893 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:53,380 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:52:56,654 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:52:58,644 basehttp 100 127769392875200 "GET /vbpm/1/editor_v2/ HTTP/1.1" 200 54590
+INFO 2026-03-10 15:53:03,444 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:53:21,835 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55819
+INFO 2026-03-10 15:53:23,311 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55819
+INFO 2026-03-10 15:53:24,749 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:53:28,619 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:53:29,431 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+WARNING 2026-03-10 15:53:32,585 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:53:32,586 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:55:15,101 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55818
+WARNING 2026-03-10 15:55:15,217 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:55:15,219 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:55:58,009 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:00,620 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:02,303 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:18,734 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:20,332 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:24,903 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:56:45,439 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55828
+INFO 2026-03-10 15:56:52,420 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+INFO 2026-03-10 15:56:53,921 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55828
+WARNING 2026-03-10 15:56:56,860 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:56:56,862 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:57:26,244 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55829
+WARNING 2026-03-10 15:57:26,322 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:57:26,323 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:57:31,117 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:57:33,177 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:57:34,950 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:58:38,078 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55906
+WARNING 2026-03-10 15:58:38,148 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:58:38,149 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:58:39,783 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55906
+WARNING 2026-03-10 15:58:39,866 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 15:58:39,867 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 15:58:49,134 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:58:50,814 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:59:23,446 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:59:24,724 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:59:27,973 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 15:59:28,608 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 15:59:29,243 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 15:59:31,064 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:04:21,608 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 55906
+WARNING 2026-03-10 16:04:21,688 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:04:21,690 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:04:39,177 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+WARNING 2026-03-10 16:04:39,261 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:04:39,263 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:04:41,985 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 56153
+WARNING 2026-03-10 16:04:42,060 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:04:42,061 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:04:51,025 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:04:59,190 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 16:05:03,382 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 16:05:08,286 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 16:05:09,391 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 16:05:31,851 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 16:05:34,880 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9976ac52-3bc0-4a6b-8f2c-c5fdd6afa8c6 HTTP/1.1" 200 100
+INFO 2026-03-10 16:06:52,435 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 57192
+WARNING 2026-03-10 16:06:52,495 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:06:52,496 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:07:21,229 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=f37453a0-866c-47bc-8dec-a64f446f4494 HTTP/1.1" 200 81
+INFO 2026-03-10 16:07:23,091 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:07:30,746 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=f37453a0-866c-47bc-8dec-a64f446f4494 HTTP/1.1" 200 81
+INFO 2026-03-10 16:07:36,106 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=f37453a0-866c-47bc-8dec-a64f446f4494 HTTP/1.1" 200 81
+INFO 2026-03-10 16:07:43,608 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=f37453a0-866c-47bc-8dec-a64f446f4494 HTTP/1.1" 200 81
+INFO 2026-03-10 16:08:51,410 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 56621
+WARNING 2026-03-10 16:08:51,500 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:08:51,501 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:08:56,838 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=de4b16c6-e6c1-410c-84a5-0c359212ccaa HTTP/1.1" 200 81
+INFO 2026-03-10 16:08:58,102 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=de4b16c6-e6c1-410c-84a5-0c359212ccaa HTTP/1.1" 200 81
+INFO 2026-03-10 16:08:59,399 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=de4b16c6-e6c1-410c-84a5-0c359212ccaa HTTP/1.1" 200 81
+INFO 2026-03-10 16:08:59,948 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=de4b16c6-e6c1-410c-84a5-0c359212ccaa HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:05,639 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9b4b58ac-5d67-4c5c-aac0-4c86d7eeb7fb HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:26,197 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9b4b58ac-5d67-4c5c-aac0-4c86d7eeb7fb HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:28,561 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9b4b58ac-5d67-4c5c-aac0-4c86d7eeb7fb HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:30,601 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9b4b58ac-5d67-4c5c-aac0-4c86d7eeb7fb HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:33,741 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=9b4b58ac-5d67-4c5c-aac0-4c86d7eeb7fb HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:34,883 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=de4b16c6-e6c1-410c-84a5-0c359212ccaa HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:40,607 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 56573
+WARNING 2026-03-10 16:09:40,686 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:09:40,687 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:09:43,467 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=507a379a-48fa-4f02-9d7c-243c26a3e535 HTTP/1.1" 200 81
+INFO 2026-03-10 16:09:50,427 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=507a379a-48fa-4f02-9d7c-243c26a3e535 HTTP/1.1" 200 81
+INFO 2026-03-10 16:12:38,305 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 57176
+WARNING 2026-03-10 16:12:38,383 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:12:38,384 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:12:41,624 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+WARNING 2026-03-10 16:12:41,691 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:12:41,693 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:12:43,447 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 57176
+WARNING 2026-03-10 16:12:43,502 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:12:43,504 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:30:19,127 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 57246
+WARNING 2026-03-10 16:30:19,221 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:30:19,223 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:30:28,689 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:39,532 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:39,894 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:45,342 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:48,220 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:52,877 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:53,381 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:30:53,898 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:04,245 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:18,610 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:20,750 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:32,480 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d244353d-43c5-46e2-abe9-f91254de208f HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:36,291 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:38,515 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:41,021 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=4237d6ee-14b0-4fff-9255-4e722b5717d3 HTTP/1.1" 200 81
+INFO 2026-03-10 16:31:49,659 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=b17fdad4-287a-4d8e-a212-47e0c43eda12 HTTP/1.1" 200 82
+INFO 2026-03-10 16:31:53,229 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d4468642-7b2b-417b-95a1-d779492811e7 HTTP/1.1" 200 82
+INFO 2026-03-10 16:31:55,603 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d4468642-7b2b-417b-95a1-d779492811e7 HTTP/1.1" 200 82
+INFO 2026-03-10 16:31:57,151 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d4468642-7b2b-417b-95a1-d779492811e7 HTTP/1.1" 200 82
+INFO 2026-03-10 16:31:59,901 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d4468642-7b2b-417b-95a1-d779492811e7 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:08,321 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d4468642-7b2b-417b-95a1-d779492811e7 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:09,826 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=94e34f7f-6040-4e48-ace8-9dfc8309f4c0 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:10,206 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=94e34f7f-6040-4e48-ace8-9dfc8309f4c0 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:16,229 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=94e34f7f-6040-4e48-ace8-9dfc8309f4c0 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:32,859 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=94e34f7f-6040-4e48-ace8-9dfc8309f4c0 HTTP/1.1" 200 82
+INFO 2026-03-10 16:32:36,418 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=b17fdad4-287a-4d8e-a212-47e0c43eda12 HTTP/1.1" 200 82
+INFO 2026-03-10 16:33:15,071 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 57752
+WARNING 2026-03-10 16:33:15,151 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:33:15,153 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:33:24,919 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d2df63fa-4bcc-4cbd-b4d3-86c2d8b70d1b HTTP/1.1" 200 82
+INFO 2026-03-10 16:33:34,642 basehttp 100 127769392875200 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=d2df63fa-4bcc-4cbd-b4d3-86c2d8b70d1b HTTP/1.1" 200 82
+INFO 2026-03-10 16:35:35,457 basehttp 100 127769392875200 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 60731
+WARNING 2026-03-10 16:35:35,512 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:35:35,514 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:35:40,244 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+WARNING 2026-03-10 16:35:40,321 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:35:40,323 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:35:43,531 basehttp 100 127769392875200 "GET /vbpm/ HTTP/1.1" 200 44716
+WARNING 2026-03-10 16:35:43,607 log 100 127769392875200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:35:43,610 basehttp 100 127769392875200 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:35:43,631 basehttp 100 127769304364736 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 16:35:43,637 basehttp 100 127769384482496 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 16:35:43,952 basehttp 100 127769384482496 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 16:35:44,007 basehttp 100 127769392875200 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 16:35:44,097 basehttp 100 127769304364736 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 16:35:44,258 basehttp 100 127769304364736 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 16:35:44,467 basehttp 100 127769304364736 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 16:35:45,655 basehttp 100 127769304364736 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 60731
+WARNING 2026-03-10 16:35:45,734 log 100 127769304364736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:35:45,736 basehttp 100 127769304364736 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:35:46,727 basehttp 100 127769304364736 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 16:36:50,277 basehttp 100 127769304364736 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 60741
+WARNING 2026-03-10 16:36:50,347 log 100 127769304364736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:36:50,349 basehttp 100 127769304364736 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:36:50,367 basehttp 100 127769384482496 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 16:36:50,375 basehttp 100 127769392875200 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 16:36:50,423 basehttp 100 127769295972032 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 16:36:50,474 basehttp 100 127769392875200 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 16:36:50,493 basehttp 100 127769295972032 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 16:36:50,896 basehttp 100 127769295972032 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 16:36:50,990 basehttp 100 127769295972032 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 16:36:52,025 basehttp 100 127769295972032 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 16:38:56,647 basehttp 100 127769295972032 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 60734
+WARNING 2026-03-10 16:38:56,692 log 100 127769295972032 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:38:56,693 basehttp 100 127769295972032 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:38:58,875 basehttp 100 127769295972032 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:39:51,082 basehttp 100 127769295972032 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 60846
+WARNING 2026-03-10 16:39:51,159 log 100 127769295972032 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:39:51,162 basehttp 100 127769295972032 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:39:51,177 basehttp 100 127769384482496 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 16:39:51,184 basehttp 100 127769392875200 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 16:39:51,208 basehttp 100 127769304364736 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 16:39:51,287 basehttp 100 127769392875200 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 16:39:51,289 basehttp 100 127769304364736 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 16:39:51,659 basehttp 100 127769304364736 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 16:39:51,743 basehttp 100 127769304364736 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 16:39:52,589 basehttp 100 127769304364736 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 16:39:53,536 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=03c43eda-9f67-4c0a-ac61-ad8cd2bf6eaf HTTP/1.1" 200 81
+INFO 2026-03-10 16:39:57,178 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:39:58,744 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:01,320 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:07,533 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:16,460 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:18,416 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:51,302 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 82
+INFO 2026-03-10 16:40:52,608 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:02,213 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:14,781 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:16,055 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:26,158 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:27,609 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:32,080 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:33,347 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:36,480 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:41,665 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:41:59,788 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:02,088 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:03,908 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:06,949 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:09,504 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:10,003 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:11,686 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:12,029 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:12,384 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:12,780 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:18,819 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/lf_node_detail/ HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:20,136 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:42:25,576 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:09,170 basehttp 100 127769304364736 "POST /vbpm/api/workflows/2/save_logicflow/ HTTP/1.1" 200 40
+INFO 2026-03-10 16:49:11,328 basehttp 100 127769304364736 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 61269
+WARNING 2026-03-10 16:49:11,439 log 100 127769304364736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 16:49:11,440 basehttp 100 127769304364736 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 16:49:15,015 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=28d5acb2-f0a5-4a0e-af7e-d56373309897 HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:17,502 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:21,405 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:23,167 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:23,547 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:23,752 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 16:49:23,944 basehttp 100 127769304364736 "GET /vbpm/api/workflows/2/lf_node_detail/?node_id=82cd9c3f-c0cc-4ee6-9109-90f146c5947e HTTP/1.1" 200 82
+INFO 2026-03-10 17:02:03,371 autoreload 100 127770216418176 /app/vbpm/models.py changed, reloading.
+INFO 2026-03-10 17:02:08,312 autoreload 150 133994482748288 Watching for file changes with StatReloader
+INFO 2026-03-10 17:08:14,320 basehttp 150 133993659233984 "GET /vbpm/2/editor_v2/ HTTP/1.1" 200 61675
+WARNING 2026-03-10 17:08:14,414 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:08:14,416 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:08:17,934 basehttp 150 133993659233984 "GET /vbpm/ HTTP/1.1" 200 45642
+WARNING 2026-03-10 17:08:18,002 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:08:18,004 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:08:29,096 basehttp 150 133993659233984 "POST /vbpm/api/workflows/ HTTP/1.1" 201 173
+INFO 2026-03-10 17:08:29,138 basehttp 150 133993659233984 "GET /vbpm/ HTTP/1.1" 200 47624
+WARNING 2026-03-10 17:08:29,194 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:08:29,196 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:08:31,130 basehttp 150 133993659233984 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52366
+WARNING 2026-03-10 17:08:31,217 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:08:31,218 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:11:11,012 basehttp 150 133993650841280 "GET /vbpm/ HTTP/1.1" 200 17275
+INFO 2026-03-10 17:11:11,309 basehttp 150 133993639302848 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 17:11:11,321 basehttp 150 133993650841280 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 17:11:11,330 basehttp 150 133993622517440 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 17:11:11,375 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 17:11:14,083 basehttp 150 133993630910144 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 17:11:23,417 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 22031
+INFO 2026-03-10 17:11:31,052 basehttp 150 133993659233984 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52380
+WARNING 2026-03-10 17:11:31,151 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:11:31,153 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:11:34,283 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 22031
+INFO 2026-03-10 17:13:18,571 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 22031
+INFO 2026-03-10 17:13:22,550 basehttp 150 133993659233984 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52380
+INFO 2026-03-10 17:14:31,831 basehttp 150 133993659233984 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52367
+WARNING 2026-03-10 17:14:31,896 log 150 133993659233984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:14:31,897 basehttp 150 133993659233984 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:17:20,173 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 22018
+INFO 2026-03-10 17:20:44,749 basehttp 150 133993622517440 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52432
+WARNING 2026-03-10 17:20:44,829 log 150 133993622517440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:20:44,831 basehttp 150 133993622517440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:26:22,695 basehttp 150 133993622517440 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52432
+WARNING 2026-03-10 17:26:22,772 log 150 133993622517440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:26:22,774 basehttp 150 133993622517440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 17:35:26,686 basehttp 150 133993622517440 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52432
+WARNING 2026-03-10 17:35:26,745 log 150 133993622517440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 17:35:26,747 basehttp 150 133993622517440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:03:44,400 basehttp 150 133993622517440 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:03:44,458 log 150 133993622517440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:03:44,460 basehttp 150 133993622517440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:03:50,426 basehttp 150 133993622517440 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:03:50,489 log 150 133993622517440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:03:50,491 basehttp 150 133993622517440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:03:50,510 basehttp 150 133993639302848 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:03:50,519 basehttp 150 133993630910144 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:03:51,166 basehttp 150 133993630910144 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:03:51,225 basehttp 150 133993639302848 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:03:51,287 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:03:51,367 basehttp 150 133993630910144 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:03:51,597 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:03:53,488 basehttp 150 133993630910144 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:04:01,555 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:04:01,617 log 150 133993630910144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:04:01,620 basehttp 150 133993630910144 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:04:01,641 basehttp 150 133993622517440 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:04:01,652 basehttp 150 133993639302848 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:04:01,669 basehttp 150 133993650841280 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:04:01,770 basehttp 150 133993650841280 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:04:01,778 basehttp 150 133993639302848 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:04:02,124 basehttp 150 133993639302848 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:04:02,264 basehttp 150 133993639302848 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:04:03,333 basehttp 150 133993639302848 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:04:29,149 basehttp 150 133993639302848 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:04:29,200 log 150 133993639302848 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:04:29,201 basehttp 150 133993639302848 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:04:44,454 basehttp 150 133993639302848 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:04:44,519 log 150 133993639302848 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:04:44,524 basehttp 150 133993639302848 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:04:44,547 basehttp 150 133993622517440 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:04:44,559 basehttp 150 133993650841280 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:04:44,573 basehttp 150 133993630910144 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:04:44,709 basehttp 150 133993650841280 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:04:44,710 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:04:45,111 basehttp 150 133993630910144 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:04:45,310 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:04:46,148 basehttp 150 133993630910144 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:06:39,528 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:06:39,630 log 150 133993630910144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:06:39,632 basehttp 150 133993630910144 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:06:42,225 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:06:42,312 log 150 133993630910144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:06:42,313 basehttp 150 133993630910144 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:06:45,754 basehttp 150 133993630910144 "GET /vbpm/3/editor_v3/ HTTP/1.1" 200 52364
+WARNING 2026-03-10 18:06:45,816 log 150 133993630910144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:06:45,824 basehttp 150 133993630910144 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:06:45,841 basehttp 150 133993622517440 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:06:45,853 basehttp 150 133993650841280 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:06:45,866 basehttp 150 133993639302848 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:06:45,982 basehttp 150 133993639302848 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:06:45,994 basehttp 150 133993650841280 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:06:46,376 basehttp 150 133993650841280 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:06:46,512 basehttp 150 133993650841280 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:06:47,244 basehttp 150 133993650841280 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:06:49,656 basehttp 150 133993650841280 "GET /vbpm/ HTTP/1.1" 200 47624
+WARNING 2026-03-10 18:06:49,720 log 150 133993650841280 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:06:49,722 basehttp 150 133993650841280 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:07:11,150 basehttp 150 133993650841280 "GET /vbpm/2/editor_v3/ HTTP/1.1" 200 52372
+WARNING 2026-03-10 18:07:11,211 log 150 133993650841280 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:07:11,213 basehttp 150 133993650841280 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:07:56,657 basehttp 150 133993650841280 "GET /vbpm/2/editor_v3/ HTTP/1.1" 200 52412
+WARNING 2026-03-10 18:07:56,756 log 150 133993650841280 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:07:56,759 basehttp 150 133993650841280 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:07:56,778 basehttp 150 133993622517440 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:07:56,790 basehttp 150 133993639302848 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:07:56,802 basehttp 150 133993630910144 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:07:57,203 basehttp 150 133993639302848 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:07:57,262 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:07:57,475 basehttp 150 133993630910144 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:07:57,693 basehttp 150 133993630910144 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:07:58,362 basehttp 150 133993630910144 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:08:02,213 basehttp 150 133993630910144 "GET /vbpm/2/editor_v3/ HTTP/1.1" 200 52412
+WARNING 2026-03-10 18:08:02,314 log 150 133993630910144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:08:02,317 basehttp 150 133993630910144 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:08:02,330 basehttp 150 133993622517440 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:08:02,339 basehttp 150 133993639302848 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:08:02,638 basehttp 150 133993639302848 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:08:02,792 basehttp 150 133993639302848 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:08:02,843 basehttp 150 133993639302848 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:08:03,068 basehttp 150 133993639302848 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:08:03,311 basehttp 150 133993639302848 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:08:03,974 basehttp 150 133993639302848 "GET /static/favicon.ico HTTP/1.1" 200 15406
+INFO 2026-03-10 18:09:39,524 basehttp 150 133993639302848 "GET /vbpm/2/editor_v3/ HTTP/1.1" 200 52412
+WARNING 2026-03-10 18:09:39,587 log 150 133993639302848 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-10 18:09:39,589 basehttp 150 133993639302848 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6783
+INFO 2026-03-10 18:09:39,609 basehttp 150 133993630910144 "GET /static/css/summernote-lite.css HTTP/1.1" 200 31086
+INFO 2026-03-10 18:09:39,621 basehttp 150 133993622517440 "GET /static/css/custom.css?v=4 HTTP/1.1" 200 87371
+INFO 2026-03-10 18:09:39,938 basehttp 150 133993622517440 "GET /media/avatars/photo_HacAzyq.png HTTP/1.1" 200 42815
+INFO 2026-03-10 18:09:39,981 basehttp 150 133993630910144 "GET /static/js/lang/summernote-ko-KR.js HTTP/1.1" 200 9926
+INFO 2026-03-10 18:09:40,028 basehttp 150 133993622517440 "GET /static/js/summernote-lite.js HTTP/1.1" 200 366080
+INFO 2026-03-10 18:09:40,160 basehttp 150 133993622517440 "GET /static/images/logo.png HTTP/1.1" 200 3305
+INFO 2026-03-10 18:09:40,383 basehttp 150 133993622517440 "GET /static/js/summernote-lite.js.map HTTP/1.1" 200 586663
+INFO 2026-03-10 18:09:41,043 basehttp 150 133993622517440 "GET /static/favicon.ico HTTP/1.1" 200 15406

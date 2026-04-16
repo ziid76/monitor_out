@@ -22,5 +22,6 @@ class MonitorTargetForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # recipients 쿼리셋 정렬
-        self.fields['recipients'].queryset = self.fields['recipients'].queryset.order_by('username')
+        # recipients 쿼리셋 정렬 (TargetRecipient 모델 사용)
+        self.fields['recipients'].queryset = self.fields['recipients'].queryset.order_by('name')
+        # 기본 위젯 속성 제거 (템플릿에서 직접 핸들링하거나 클래스로 통제)

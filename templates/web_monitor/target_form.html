@@ -1,0 +1,238 @@
+{% extends "basic.html" %}
+
+{% block page_name %}{% if object %}모바일 모니터링 수정{% else %}신규 대상 등록{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+            <h3 class="text-lg font-bold text-slate-900">
+                {% if object %}
+                    <span class="text-primary">{{ object.name }}</span> 설정 변경
+                {% else %}
+                    신규 모니터링 대상 등록
+                {% endif %}
+            </h3>
+            <a href="{% if object %}{% url 'web_monitor:target_detail' object.pk %}{% else %}{% url 'web_monitor:dashboard' %}{% endif %}" 
+               class="text-slate-400 hover:text-slate-600 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+        </div>
+
+        <form method="post" class="p-8">
+            {% csrf_token %}
+            <div class="flex flex-col gap-6">
+                {% for field in form %}
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
+                        {% if field.field.required %}<span class="text-[10px] text-red-500 font-bold uppercase">Required</span>{% endif %}
+                    </div>
+                    
+                    {% if field.name == 'is_active' %}
+                        <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100 w-fit">
+                            {{ field }}
+                            <span class="text-sm font-medium text-slate-600">이 사이트를 현재 활성화하여 감시함</span>
+                        </div>
+                    {% elif field.name == 'recipients' %}
+                        <div class="flex flex-col gap-3">
+                            <!-- Selected Recipients Display -->
+                            <div id="selectedRecipients" class="flex flex-wrap gap-2 p-4 bg-slate-50 rounded-xl border border-slate-100 min-h-[60px]">
+                                {% for recipient in object.recipients.all %}
+                                <div class="recipient-tag px-3 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full flex items-center gap-2" data-id="{{ recipient.id }}">
+                                    <span>{{ recipient.name }} ({{ recipient.email }})</span>
+                                    <button type="button" onclick="removeRecipient('{{ recipient.id }}')" class="hover:text-red-500 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">close</span>
+                                    </button>
+                                </div>
+                                {% empty %}
+                                <p id="noRecipientMsg" class="text-xs text-slate-400">등록된 수신인이 없습니다.</p>
+                                {% endfor %}
+                            </div>
+                            
+                            <!-- Hidden Select for Django M2M -->
+                            <div class="hidden">
+                                {{ field }}
+                            </div>
+
+                            <!-- API Recipient Selector -->
+                            <div class="relative">
+                                <button type="button" onclick="toggleApiList()" 
+                                        class="px-4 py-2 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">person_add</span>
+                                    외부 API에서 대상자 가져오기
+                                </button>
+                                
+                                <div id="apiRecipientList" class="absolute left-0 top-full mt-2 w-full max-w-sm bg-white border border-slate-200 rounded-xl shadow-xl z-50 hidden max-h-60 overflow-y-auto">
+                                    <div class="p-3 border-b border-slate-100 sticky top-0 bg-white flex items-center justify-between">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase">API 결과</p>
+                                        <button type="button" onclick="loadExternalRecipients()" class="text-[10px] text-primary font-bold hover:underline">새로고침</button>
+                                    </div>
+                                    <div id="apiRecipientListContent" class="py-2">
+                                        <!-- API results will be here -->
+                                        <div class="px-4 py-3 text-xs text-slate-400 text-center">불러오기 버튼을 눌러주세요.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                    <p class="text-xs text-slate-400 leading-relaxed">{{ field.help_text }}</p>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                    <p class="text-xs text-red-500 font-bold">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-10 flex items-center justify-end gap-3 border-t border-slate-100 pt-8">
+                <a href="{% if object %}{% url 'web_monitor:target_detail' object.pk %}{% else %}{% url 'web_monitor:dashboard' %}{% endif %}" 
+                   class="px-6 py-2.5 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors">
+                    취소하기
+                </a>
+                <button type="submit" class="px-10 py-2.5 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                    저장 완료
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    {% if object %}
+    <div class="mt-8 p-6 bg-red-50 rounded-2xl border border-red-100 flex items-center justify-between">
+        <div>
+            <h4 class="text-sm font-bold text-red-700">위험 구역</h4>
+            <p class="text-xs text-red-500 mt-1">이 대상을 삭제하면 모든 히스토리와 로그가 영구적으로 삭제됩니다.</p>
+        </div>
+        <form action="{% url 'web_monitor:target_delete' object.pk %}" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.');">
+            {% csrf_token %}
+            <button type="submit" class="px-6 py-2 bg-white text-red-600 border border-red-200 text-xs font-bold rounded-full hover:bg-red-600 hover:text-white transition-all">
+                대상 삭제
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    input[type="text"], input[type="url"], input[type="number"], textarea, select {
+        @apply w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary/50 outline-none text-sm transition-all !important;
+    }
+    input[type="checkbox"] {
+        @apply size-5 rounded border-slate-300 text-primary focus:ring-primary !important;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleApiList() {
+        document.getElementById('apiRecipientList').classList.toggle('hidden');
+    }
+
+    function loadExternalRecipients() {
+        const content = document.getElementById('apiRecipientListContent');
+        content.innerHTML = '<div class="px-4 py-3 text-xs text-slate-400 text-center">불러오는 중...</div>';
+        
+        fetch("{% url 'web_monitor:fetch_recipients' %}")
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.data.length === 0) {
+                        content.innerHTML = '<div class="px-4 py-3 text-xs text-slate-400 text-center">검색 결과가 없습니다.</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.data.forEach(user => {
+                        html += `
+                            <div onclick="selectRecipient('${user.name}', '${user.email}')" 
+                                 class="px-4 py-2 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex flex-col gap-0.5">
+                                <span class="text-sm font-bold text-slate-700">${user.name}</span>
+                                <span class="text-[10px] text-slate-400 font-medium">${user.email}</span>
+                            </div>
+                        `;
+                    });
+                    content.innerHTML = html;
+                } else {
+                    content.innerHTML = `<div class="px-4 py-3 text-xs text-red-500 text-center">${data.message}</div>`;
+                }
+            })
+            .catch(err => {
+                content.innerHTML = `<div class="px-4 py-3 text-xs text-red-500 text-center">오류 발생: ${err}</div>`;
+            });
+    }
+
+    function selectRecipient(name, email) {
+        const existing = Array.from(document.querySelectorAll('.recipient-tag span')).some(span => span.textContent.includes(email));
+        if (existing) {
+            alert('이미 추가된 대상자입니다.');
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+        fetch("{% url 'web_monitor:add_recipient' %}", {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                addRecipientToUI(data.id, data.name, data.email);
+                toggleApiList();
+            } else {
+                alert('수신인 추가 실패: ' + data.message);
+            }
+        });
+    }
+
+    function addRecipientToUI(id, name, email) {
+        const container = document.getElementById('selectedRecipients');
+        const noMsg = document.getElementById('noRecipientMsg');
+        if (noMsg) noMsg.remove();
+
+        const tag = document.createElement('div');
+        tag.className = 'recipient-tag px-3 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full flex items-center gap-2';
+        tag.dataset.id = id;
+        tag.innerHTML = `
+            <span>${name} (${email})</span>
+            <button type="button" onclick="removeRecipient('${id}')" class="hover:text-red-500 transition-colors">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+        `;
+        container.appendChild(tag);
+
+        const select = document.querySelector('select[name="recipients"]');
+        let option = select.querySelector(`option[value="${id}"]`);
+        if (!option) {
+            option = document.createElement('option');
+            option.value = id;
+            option.textContent = name;
+            select.appendChild(option);
+        }
+        option.selected = true;
+    }
+
+    function removeRecipient(id) {
+        const tag = document.querySelector(`.recipient-tag[data-id="${id}"]`);
+        if (tag) tag.remove();
+
+        const select = document.querySelector('select[name="recipients"]');
+        const option = select.querySelector(`option[value="${id}"]`);
+        if (option) option.selected = false;
+
+        if (document.querySelectorAll('.recipient-tag').length === 0) {
+            const container = document.getElementById('selectedRecipients');
+            container.innerHTML = '<p id="noRecipientMsg" class="text-xs text-slate-400">등록된 수신인이 없습니다.</p>';
+        }
+    }
+</script>
+{% endblock %}

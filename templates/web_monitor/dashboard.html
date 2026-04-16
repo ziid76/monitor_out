@@ -7,161 +7,207 @@
 <div class="flex flex-col gap-6">
     <!-- Status Overview -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-            <div class="size-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                <span class="material-symbols-outlined">language</span>
+        <div class="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex items-center gap-6 overflow-hidden relative">
+            <div class="size-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110 group-hover:rotate-3">
+                <span class="material-symbols-outlined text-3xl">language</span>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500">전체 대상</p>
-                <h3 class="text-2xl font-bold text-slate-900">{{ total_count }}</h3>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">전체 모니터링 수</p>
+                <h3 class="text-4xl font-black text-slate-900 mt-1">{{ total_count }}</h3>
             </div>
+            <div class="absolute -right-4 -bottom-4 size-24 bg-blue-50/50 rounded-full blur-2xl group-hover:bg-blue-100/50 transition-colors"></div>
         </div>
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-            <div class="size-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-                <span class="material-symbols-outlined">check_circle</span>
+        
+        <div class="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex items-center gap-6 overflow-hidden relative">
+            <div class="size-16 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110 group-hover:rotate-3">
+                <span class="material-symbols-outlined text-3xl">verified</span>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500">정상 (UP)</p>
-                <h3 class="text-2xl font-bold text-emerald-600">{{ up_count }}</h3>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">정상 서비스</p>
+                <h3 class="text-4xl font-black text-emerald-600 mt-1">{{ up_count }}</h3>
             </div>
+            <div class="absolute -right-4 -bottom-4 size-24 bg-emerald-50/50 rounded-full blur-2xl group-hover:bg-emerald-100/50 transition-colors"></div>
         </div>
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-            <div class="size-12 rounded-full bg-red-50 flex items-center justify-center text-red-600">
-                <span class="material-symbols-outlined">error</span>
+
+        <div class="group bg-white p-8 rounded-[2rem] border-2 border-red-50 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex items-center gap-6 overflow-hidden relative">
+            <div class="size-16 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 transition-transform group-hover:scale-110 group-hover:rotate-3">
+                <span class="material-symbols-outlined text-3xl">warning_amber</span>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500">장애 (DOWN)</p>
-                <h3 class="text-2xl font-bold text-red-600">{{ down_count }}</h3>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">장애 발생</p>
+                <h3 class="text-4xl font-black text-red-600 mt-1">{{ down_count }}</h3>
             </div>
+            <div class="absolute -right-4 -bottom-4 size-24 bg-red-50/50 rounded-full blur-2xl group-hover:bg-red-100/50 transition-colors"></div>
+            {% if down_count > 0 %}
+            <div class="absolute inset-0 bg-red-500/5 animate-pulse pointer-events-none"></div>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Targets Table -->
-    <div class="bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="text-lg font-bold text-slate-900">모니터링 대상 목록</h3>
-            <div class="flex items-center gap-2">
-                <a href="{% url 'web_monitor:log_list' %}" class="px-4 py-2 bg-slate-100 text-slate-600 text-sm font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">list_alt</span>
-                    전체 로그 조회
+    <!-- Targets Grid -->
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <span class="material-symbols-outlined">analytics</span>
+                모니터링 대상
+            </h3>
+            <div class="flex items-center gap-4">
+                <!-- Auto Refresh Toggle -->
+                <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Auto Refresh</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoRefreshToggle" class="sr-only peer" checked>
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                    <div id="refreshTimer" class="text-xs font-mono font-black text-primary bg-primary/5 px-2 py-0.5 rounded-md border border-primary/10 min-w-[28px] text-center">30</div>
+                </div>
+
+                <a href="{% url 'web_monitor:log_list' %}" class="px-5 py-2.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-200 transition-all flex items-center gap-2 hover:translate-y-[-2px]">
+                    <span class="material-symbols-outlined text-sm">history</span>
+                    전체 로그
                 </a>
-                {% if can_manage %}
-                <button onclick="toggleModal('optionSettingsModal')" class="px-4 py-2 border border-slate-200 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-50 transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">settings</span>
-                    옵션 설정
+                {% if is_manager %}
+                <button id="inspectBtn" onclick="runInspect()" class="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2 hover:translate-y-[-2px] disabled:opacity-60 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-sm">radar</span>
+                    즉시 점검
                 </button>
-                <button onclick="toggleModal('addTargetModal')" class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm text-white">add</span>
+                <a href="{% url 'web_monitor:target_add' %}" class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:translate-y-[-2px]">
+                    <span class="material-symbols-outlined text-sm">add_circle</span>
                     대상 추가
-                </button>
+                </a>
+                {% else %}
+                <a href="{% url 'web_monitor:manager_auth' %}" class="px-5 py-2.5 bg-slate-800 text-white text-sm font-bold rounded-xl hover:bg-slate-900 transition-all flex items-center gap-2 shadow-lg shadow-slate-300 hover:translate-y-[-2px]">
+                    <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                    관리자 로그인
+                </a>
                 {% endif %}
             </div>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead class="bg-slate-50">
-                    <tr>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">사이트 이름</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">URL</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">주기</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">마지막 체크</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    {% for target in targets %}
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <a href="{% url 'web_monitor:target_detail' target.pk %}" class="font-bold text-slate-900 hover:text-primary transition-colors">
-                                {{ target.name }}
-                            </a>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500">{{ target.url }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-900">{{ target.check_interval }}초</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            {% if target.last_status == 'UP' %}
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
-                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
-                                UP
-                            </span>
-                            {% elif target.last_status == 'DOWN' %}
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
-                                <span class="size-1.5 rounded-full bg-red-500"></span>
-                                DOWN
-                            </span>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {% for target in targets %}
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative {% if target.last_status == 'DOWN' %}ring-2 ring-red-500/10 border-red-100{% endif %}">
+                <!-- Status Header -->
+                <div class="px-6 pt-6 pb-2 flex items-start justify-between">
+                    <div class="flex flex-col gap-1 min-w-0">
+                        <a href="{% url 'web_monitor:target_detail' target.pk %}" class="text-lg font-bold text-slate-900 truncate group-hover:text-primary transition-colors">
+                            {{ target.name }}
+                        </a>
+                        <p class="text-xs text-slate-400 truncate font-medium">{{ target.url }}</p>
+                    </div>
+                    {% if target.last_status == 'UP' %}
+                    <div class="px-3 py-1.5 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-1.5 shadow-sm">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[11px] font-black uppercase tracking-wider">Online</span>
+                    </div>
+                    {% elif target.last_status == 'DOWN' %}
+                    <div class="px-3 py-1.5 rounded-2xl bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5 shadow-sm animate-pulse">
+                        <span class="material-symbols-outlined text-sm">report</span>
+                        <span class="text-[11px] font-black uppercase tracking-wider">Offline</span>
+                    </div>
+                    {% else %}
+                    <div class="px-3 py-1.5 rounded-2xl bg-slate-50 text-slate-500 border border-slate-100 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">schedule</span>
+                        <span class="text-[11px] font-black uppercase tracking-wider">Pending</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Info Body -->
+                <div class="px-6 py-4 flex flex-col gap-4 flex-grow">
+                    <!-- Status Changed at -->
+                    <div class="flex flex-col gap-1 px-4 py-3 bg-slate-50/50 rounded-2xl border border-slate-50">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">상태 변경 시점</p>
+                        <p class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-xs text-slate-400">history_toggle_off</span>
+                            {% if target.last_status_changed_at %}
+                                {{ target.last_status_changed_at|date:"Y-m-d H:i:s" }}
                             {% else %}
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
-                                <span class="size-1.5 rounded-full bg-slate-400"></span>
-                                PENDING
-                            </span>
+                                <span class="text-slate-300">-</span>
                             {% endif %}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500">
+                        </p>
+                    </div>
+
+                    <!-- Grid for other info -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">최종 점검</p>
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[14px]">done_all</span>
                                 {% if target.last_checked_at %}
-                                    {{ target.last_checked_at|date:"m/d H:i:s" }}
+                                    {{ target.last_checked_at|date:"H:i:s" }}
                                 {% else %}
                                     -
                                 {% endif %}
-                            </span>
-                        </td>
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-1 items-end">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">체크 주기</p>
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                {{ target.check_interval }}s
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">
-                            모니터링할 웹사이트가 등록되지 않았습니다.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <!-- Card Footer Action -->
+                <a href="{% url 'web_monitor:target_detail' target.pk %}" class="mt-auto px-6 py-4 bg-slate-50/50 border-t border-slate-50 flex items-center justify-between group-hover:bg-primary transition-all duration-300">
+                    <span class="text-xs font-bold text-slate-600 group-hover:text-white transition-colors">상세 분석 및 관리</span>
+                    <span class="material-symbols-outlined text-slate-400 text-sm group-hover:text-white group-hover:translate-x-1 transition-all">chevron_right</span>
+                </a>
+
+                {% if target.last_status == 'DOWN' %}
+                <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 to-rose-500"></div>
+                {% elif target.last_status == 'UP' %}
+                <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="col-span-full py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200 flex flex-col items-center justify-center gap-4">
+                <div class="size-16 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-300">
+                    <span class="material-symbols-outlined text-4xl">inventory_2</span>
+                </div>
+                <div class="text-center">
+                    <p class="text-slate-500 font-bold">모니터링할 웹사이트가 없습니다.</p>
+                    <p class="text-xs text-slate-400 mt-1">새로운 대상을 추가하여 모니터링을 시작하세요.</p>
+                </div>
+                <a href="{% url 'web_monitor:target_add' %}" class="mt-2 px-6 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    지금 추가하기
+                </a>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-<!-- Add Target Modal -->
-<div id="addTargetModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('addTargetModal')"></div>
-        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <h3 class="text-lg font-bold text-slate-900">신규 모니터링 대상 추가</h3>
-                <button onclick="toggleModal('addTargetModal')" class="text-slate-400 hover:text-slate-600 transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <form action="{% url 'web_monitor:target_add' %}" method="post">
-                {% csrf_token %}
-                <div class="px-6 py-6 flex flex-col gap-4">
-                    {% for field in form %}
-                    {% if field.name != 'is_active' %}
-                    <div class="flex flex-col gap-1">
-                        <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
-                        {{ field }}
-                        {% if field.help_text %}
-                        <p class="text-xs text-slate-400">{{ field.help_text }}</p>
-                        {% endif %}
-                    </div>
-                    {% else %}
-                    <div class="flex items-center gap-2">
-                        {{ field }}
-                        <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
-                    <button type="button" onclick="toggleModal('addTargetModal')" class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-800 transition-colors">취소</button>
-                    <button type="submit" class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors">저장하기</button>
-                </div>
-            </form>
+<!-- Inline Inspect Console -->
+<div id="inspectConsolePanel" class="hidden mt-4 bg-slate-900 rounded-2xl border border-slate-700 shadow-xl overflow-hidden transition-all">
+    <div class="flex items-center justify-between px-5 py-3 bg-slate-800 border-b border-slate-700">
+        <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+                <span id="inspectPingDot" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span>
+                <span id="inspectDot" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span>
+            </span>
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest">즉시 점검 — Console Output</h4>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="clearInspectConsole()" class="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">delete_sweep</span>
+                비우기
+            </button>
+            <button onclick="closeInspectConsole()" class="text-slate-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
         </div>
     </div>
+    <div id="inspectConsoleOutput" class="text-slate-300 p-4 font-mono text-xs h-48 overflow-y-auto whitespace-pre-wrap"></div>
 </div>
 
 <!-- Option Settings Modal -->
@@ -318,9 +364,108 @@
         outputEl.scrollTop = outputEl.scrollHeight;
     }
 
+    async function runInspect() {
+        const btn = document.getElementById('inspectBtn');
+        const panel = document.getElementById('inspectConsolePanel');
+        const outputEl = document.getElementById('inspectConsoleOutput');
+        const dot = document.getElementById('inspectDot');
+        const pingDot = document.getElementById('inspectPingDot');
+
+        // Show panel
+        panel.classList.remove('hidden');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // Disable button during run
+        btn.disabled = true;
+        dot.className = 'relative inline-flex rounded-full h-2 w-2 bg-yellow-400';
+        pingDot.classList.remove('hidden');
+
+        const now = new Date().toLocaleTimeString();
+        outputEl.innerHTML += `<span class="text-slate-500">[${now}]</span> <span class="text-yellow-300">> Running: check_web_status...</span>\n`;
+        outputEl.scrollTop = outputEl.scrollHeight;
+
+        try {
+            const response = await fetch(`/web-monitor/run-command/check_web_status/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                dot.className = 'relative inline-flex rounded-full h-2 w-2 bg-emerald-400';
+                outputEl.innerHTML += `<span class="text-emerald-400">${data.output || '점검 완료.'}</span>\n`;
+                outputEl.innerHTML += `<span class="text-slate-500">─────────────────────────────────────\n</span>`;
+            } else {
+                dot.className = 'relative inline-flex rounded-full h-2 w-2 bg-red-400';
+                outputEl.innerHTML += `<span class="text-red-400">Error: ${data.message}</span>\n`;
+                if (data.output) {
+                    outputEl.innerHTML += `<span class="text-red-300">${data.output}</span>\n`;
+                }
+            }
+        } catch (error) {
+            dot.className = 'relative inline-flex rounded-full h-2 w-2 bg-red-400';
+            outputEl.innerHTML += `<span class="text-red-400">Request Failed: ${error}</span>\n`;
+        }
+
+        pingDot.classList.add('hidden');
+        btn.disabled = false;
+        outputEl.scrollTop = outputEl.scrollHeight;
+    }
+
+    function clearInspectConsole() {
+        document.getElementById('inspectConsoleOutput').innerHTML = '';
+    }
+
+    function closeInspectConsole() {
+        document.getElementById('inspectConsolePanel').classList.add('hidden');
+    }
+
     function clearConsole() {
         document.getElementById('consoleOutput').innerHTML = '';
         document.getElementById('commandConsole').classList.add('hidden');
     }
+
+    // Auto Refresh Logic
+    (function() {
+        let timeLeft = 30;
+        let refreshInterval;
+        const timerEl = document.getElementById('refreshTimer');
+        const toggleEl = document.getElementById('autoRefreshToggle');
+
+        // Load saved state from localStorage
+        const savedAutoRefresh = localStorage.getItem('autoRefreshEnabled');
+        if (savedAutoRefresh !== null) {
+            toggleEl.checked = savedAutoRefresh === 'true';
+            if (!toggleEl.checked) timerEl.classList.add('opacity-30');
+        }
+
+        function startTimer() {
+            refreshInterval = setInterval(() => {
+                if (toggleEl.checked) {
+                    timeLeft--;
+                    timerEl.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        location.reload();
+                    }
+                }
+            }, 1000);
+        }
+
+        toggleEl.addEventListener('change', () => {
+            localStorage.setItem('autoRefreshEnabled', toggleEl.checked);
+            if (!toggleEl.checked) {
+                timerEl.classList.add('opacity-30');
+            } else {
+                timerEl.classList.remove('opacity-30');
+                timeLeft = 30;
+                timerEl.innerText = timeLeft;
+            }
+        });
+
+        startTimer();
+    })();
 </script>
 {% endblock %}

@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django_celery_beat',
     'web_monitor',
 ]
 
@@ -127,13 +126,3 @@ LOGGING = {
     'root': {'handlers': ['console', 'file'], 'level': 'INFO'},
 }
 
-# Celery Settings
-CELERY_REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-CELERY_REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', f'redis://{CELERY_REDIS_HOST}:{CELERY_REDIS_PORT}/0')
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', f'redis://{CELERY_REDIS_HOST}:{CELERY_REDIS_PORT}/0')
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

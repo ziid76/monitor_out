@@ -1,0 +1,23 @@
+<HEAD>
+<TITLE>redirect to login page</TITLE>
+</HEAD>
+<BODY>
+
+<script>
+        if(document.domain.indexOf("mgw.") >= 0 ) {
+          location.href = "https:"+"//"+document.domain+"/ekp/moblview/mologin/userLogin";
+  } else {
+	if(document.domain.indexOf("arlimy.") >= 0){
+	  location.href = "https://"+document.domain.replace("arlimy.", "gw.")+"/ekp/view/login/userLogin";
+        } else if(document.domain.indexOf("gw2.") >= 0) {
+          location.href = "https://"+document.domain.replace("gw2.", "gw.")+"/ekp/view/login/userLogin";
+	} else if(document.domain.indexOf("gw3.") >= 0) {
+          location.href = "https://"+document.domain.replace("gw3.", "gw.")+"/ekp/view/login/userLogin";
+        } else {
+          location.href = "https:"+"//"+document.domain+"/ekp/view/login/userLogin";
+	}
+  }
+</script>
+
+</BODY>
+</HTML>

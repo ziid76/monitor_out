@@ -1,53 +1,12 @@
 services:
-  redis:
-    image: redis:7-alpine
-    restart: always
-    ports:
-      - "6379:6379"
-
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8008
     volumes:
       - .:/app
       - ./logs:/app/logs
     env_file:
       - .env
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      - redis
     ports:
-      - "8000:8000"
-    restart: always
-
-  celery_worker:
-    build: .
-    command: celery -A config worker -l info
-    volumes:
-      - .:/app
-      - ./logs:/app/logs
-    env_file:
-      - .env
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      - redis
-    restart: always
-
-  celery_beat:
-    build: .
-    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    volumes:
-      - .:/app
-      - ./logs:/app/logs
-    env_file:
-      - .env
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      - redis
+      - "8008:8008"
     restart: always

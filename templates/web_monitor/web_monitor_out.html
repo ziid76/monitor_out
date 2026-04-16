@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Web Monitor — Status</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0077C8",
+                        "background-light": "#f8fafc",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] font-display text-slate-900">
+<div class="p-4 md:p-6 flex flex-col gap-5">
+
+    <!-- Header bar -->
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">monitor_heart</span>
+            <span class="text-sm font-extrabold text-slate-700 uppercase tracking-widest">Web Monitor</span>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Live
+        </div>
+    </div>
+
+    <!-- Status Overview -->
+    <div class="grid grid-cols-3 gap-3">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col gap-1">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">전체</p>
+            <p class="text-3xl font-black text-slate-900">{{ total_count }}</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-emerald-100 shadow-sm p-4 flex flex-col gap-1">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">정상</p>
+            <p class="text-3xl font-black text-emerald-600">{{ up_count }}</p>
+        </div>
+        <div class="bg-white rounded-2xl border {% if down_count > 0 %}border-red-200{% else %}border-slate-100{% endif %} shadow-sm p-4 flex flex-col gap-1 relative overflow-hidden">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">장애</p>
+            <p class="text-3xl font-black text-red-600">{{ down_count }}</p>
+            {% if down_count > 0 %}
+            <div class="absolute inset-0 bg-red-500/5 animate-pulse pointer-events-none"></div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Target Cards -->
+    <div class="flex flex-col gap-2">
+        {% for target in targets %}
+        <div class="bg-white rounded-2xl border {% if target.last_status == 'DOWN' %}border-red-100 ring-1 ring-red-400/20{% else %}border-slate-100{% endif %} shadow-sm px-4 py-3 flex items-center gap-4 relative overflow-hidden">
+            <!-- Status Dot -->
+            <div class="shrink-0">
+                {% if target.last_status == 'UP' %}
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                {% elif target.last_status == 'DOWN' %}
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                {% else %}
+                <span class="relative flex h-3 w-3">
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-300"></span>
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-slate-900 truncate">{{ target.name }}</p>
+                <p class="text-[10px] text-slate-400 truncate font-medium">{{ target.url }}</p>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="shrink-0 flex flex-col items-end gap-1">
+                {% if target.last_status == 'UP' %}
+                <span class="text-[10px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full uppercase">Online</span>
+                {% elif target.last_status == 'DOWN' %}
+                <span class="text-[10px] font-black text-red-600 bg-red-50 border border-red-100 px-2 py-0.5 rounded-full uppercase animate-pulse">Offline</span>
+                {% else %}
+                <span class="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-full uppercase">Pending</span>
+                {% endif %}
+                {% if target.last_checked_at %}
+                <span class="text-[9px] text-slate-300 font-mono">{{ target.last_checked_at|date:"H:i:s" }}</span>
+                {% endif %}
+            </div>
+
+            <!-- DOWN indicator bar -->
+            {% if target.last_status == 'DOWN' %}
+            <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-red-500 to-rose-500 rounded-l-2xl"></div>
+            {% elif target.last_status == 'UP' %}
+            <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-l-2xl"></div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="py-12 bg-white rounded-2xl border border-dashed border-slate-200 flex flex-col items-center gap-3 text-center">
+            <span class="material-symbols-outlined text-slate-300 text-4xl">inventory_2</span>
+            <p class="text-sm text-slate-400 font-medium">모니터링 대상이 없습니다.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-[9px] text-slate-300 font-mono pt-1">
+        Auto-refresh every 60s &bull; Web Monitor Embed
+    </div>
+</div>
+
+<script>
+    // 60초마다 자동 새로고침
+    setTimeout(() => location.reload(), 60000);
+</script>
+</body>
+</html>

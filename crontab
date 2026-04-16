@@ -1,10 +1,4 @@
-# 매일 오전 9시에 마감일 알림 체크
-0 9 * * * cd /app && /usr/local/bin/python manage.py check_notifications --type=due_date >> /var/log/cron/notifications.log 2>&1
+# Web Monitor Every Minute Check
+* * * * * cd /app && /usr/local/bin/python manage.py check_web_status >> /app/logs/cron_monitor.log 2>&1
 
-# 매주 금요일 오후 5시에 워크로그 알림 체크
-0 17 * * 5 cd /app && /usr/local/bin/python manage.py check_notifications --type=worklog >> /var/log/cron/notifications.log 2>&1
-
-# 매일 오후 5시에 모니터링 실행여부 체크
-0 17 * * 5 cd /app && /usr/local/bin/python manage.py check_notifications --type=monitor >> /var/log/cron/notifications.log 2>&1
-
-# 빈 줄 필요
+# Required empty line below

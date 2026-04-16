@@ -1,6 +1,13 @@
 from django.db import models
 from django.utils import timezone
 
+class TargetRecipient(models.Model):
+    name = models.CharField(max_length=100, verbose_name="이름")
+    email = models.EmailField(verbose_name="이메일", unique=True)
+    
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+
 class MonitorTarget(models.Model):
     STATUS_CHOICES = [
         ('UP', 'UP'),
@@ -19,14 +26,14 @@ class MonitorTarget(models.Model):
     # 레거시 호환성을 위해 유지하거나 마이그레이션용으로 둠
     signatures = models.JSONField(default=dict, verbose_name="정상 판단 시그니처 (레거시)", blank=True)
     
-    # 알림 대상자 (사용자 목록에서 선택)
-    from django.contrib.auth.models import User
-    recipients = models.ManyToManyField(User, related_name='monitoring_targets', verbose_name="알림 수신 대상자")
+    # 알림 대상자 (외부 API에서 가져와 저장됨)
+    recipients = models.ManyToManyField(TargetRecipient, related_name='monitoring_targets', verbose_name="알림 수신 대상자")
     
     is_active = models.BooleanField(default=True, verbose_name="활성 여부")
     log_retention_days = models.IntegerField(default=7, verbose_name="로그 보관 주기 (일)")
     
     last_status = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True, verbose_name="마지막 상태")
+    last_status_changed_at = models.DateTimeField(null=True, blank=True, verbose_name="상태 변경 시간")
     last_checked_at = models.DateTimeField(null=True, blank=True, verbose_name="마지막 체크 시간")
     
     created_at = models.DateTimeField(auto_now_add=True)

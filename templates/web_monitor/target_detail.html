@@ -21,10 +21,10 @@
             <p class="text-slate-500">{{ target.url }}</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-             {% if can_manage %}
-             <button onclick="toggleModal('updateTargetModal')" class="px-4 py-2 border border-slate-200 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-50 transition-colors">
+             {% if is_manager %}
+             <a href="{% url 'web_monitor:target_update' target.pk %}" class="px-4 py-2 border border-slate-200 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-50 transition-colors">
                 설정 변경
-            </button>
+            </a>
             {% endif %}
             <a href="{% url 'web_monitor:dashboard' %}" class="px-4 py-2 bg-primary text-slate-100 text-sm font-bold rounded-full hover:bg-slate-200 transition-colors">
                 목록으로
@@ -69,7 +69,7 @@
                     <label class="text-xs font-bold text-slate-400 uppercase">알림 수신 대상자</label>
                     <div class="mt-1 flex flex-wrap gap-1">
                         {% for user in target.recipients.all %}
-                        <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">{{ user.username }}</span>
+                        <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">{{ user }}</span>
                         {% empty %}
                         <span class="text-sm text-slate-400">선택된 대상자 없음</span>
                         {% endfor %}
@@ -148,45 +148,7 @@
         </div>
     </div>
 
-    <!-- Update Target Modal -->
-    <div id="updateTargetModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('updateTargetModal')"></div>
-            <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
-                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                    <h3 class="text-lg font-bold text-slate-900">모니터링 설정 변경</h3>
-                    <button onclick="toggleModal('updateTargetModal')" class="text-slate-400 hover:text-slate-600 transition-colors">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-                <form action="{% url 'web_monitor:target_update' target.pk %}" method="post">
-                    {% csrf_token %}
-                    <div class="px-6 py-6 flex flex-col gap-4">
-                        {% for field in form %}
-                        {% if field.name != 'is_active' %}
-                        <div class="flex flex-col gap-1">
-                            <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.help_text %}
-                            <p class="text-xs text-slate-400">{{ field.help_text }}</p>
-                            {% endif %}
-                        </div>
-                        {% else %}
-                        <div class="flex items-center gap-2">
-                            {{ field }}
-                            <label class="text-sm font-bold text-slate-700">{{ field.label }}</label>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
-                        <button type="button" onclick="toggleModal('updateTargetModal')" class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-800 transition-colors">취소</button>
-                        <button type="submit" class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary/90 transition-colors">저장하기</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Response View Modal -->
     <div id="responseModal" class="fixed inset-0 z-[100] hidden overflow-y-auto">

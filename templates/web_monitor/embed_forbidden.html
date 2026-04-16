@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>403 — 접근 권한 없음</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen">
+    <div class="text-center flex flex-col items-center gap-4 p-8">
+        <div class="w-16 h-16 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center text-4xl">
+            🔒
+        </div>
+        <h1 class="text-2xl font-black text-slate-800">접근 권한 없음</h1>
+        <p class="text-sm text-slate-500 max-w-xs leading-relaxed">
+            유효한 접근 키가 필요합니다.<br/>
+            요청 헤더에 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono text-slate-700">X-Embed-Key</code> 를 포함하거나,<br/>
+            URL에 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono text-slate-700">?key=...</code> 파라미터를 추가하세요.
+        </p>
+        <span class="text-xs text-slate-300 font-mono">HTTP 403 Forbidden</span>
+    </div>
+</body>
+</html>

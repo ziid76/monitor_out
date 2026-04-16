@@ -218,10 +218,14 @@ def perform_monitoring(target_id):
     
     # 상태 변경 감지
     prev_status = target.last_status
+    now = timezone.now()
     
+    if prev_status != status:
+        target.last_status_changed_at = now
+
     # 저장
     target.last_status = status
-    target.last_checked_at = timezone.now()
+    target.last_checked_at = now
     target.save()
     
     if status == "DOWN":

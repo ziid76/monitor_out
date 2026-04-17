@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -55,7 +55,7 @@ class ManagerLogoutView(View):
         messages.info(request, "관리자 모드에서 로그아웃되었습니다.")
         return redirect('web_monitor:dashboard')
 
-class DashboardView(ListView):
+class DashboardView(LoginRequiredMixin, ListView):
     model = MonitorTarget
     template_name = 'web_monitor/dashboard.html'
     context_object_name = 'targets'
@@ -78,7 +78,7 @@ class TargetCreateView(AdminOrLeaderRequiredMixin, CreateView):
         messages.success(self.request, "새로운 모니터링 대상이 추가되었습니다.")
         return super().form_valid(form)
     
-class TargetDetailView(DetailView):
+class TargetDetailView(LoginRequiredMixin, DetailView):
     model = MonitorTarget
     template_name = 'web_monitor/target_detail.html'
     context_object_name = 'target'
@@ -120,7 +120,7 @@ class RunCommandView(AdminOrLeaderRequiredMixin, View):
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e), 'output': out.getvalue()})
 
-class LogListView(ListView):
+class LogListView(LoginRequiredMixin, ListView):
     model = MonitoringLog
     template_name = 'web_monitor/log_list.html'
     context_object_name = 'logs'
@@ -142,7 +142,7 @@ class LogListView(ListView):
         return context
 
 @method_decorator(xframe_options_exempt, name='dispatch')
-class ViewLastResponseView(View):
+class ViewLastResponseView(LoginRequiredMixin, View):
     def get(self, request, pk):
         target = get_object_or_404(MonitorTarget, pk=pk)
         safe_name = "".join([c for c in target.name if c.isalnum() or c in (' ', '-', '_')]).strip().replace(' ', '_')
@@ -157,7 +157,7 @@ class ViewLastResponseView(View):
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
-class ViewPinnedResponseView(View):
+class ViewPinnedResponseView(LoginRequiredMixin, View):
     def get(self, request, pk):
         log = get_object_or_404(MonitoringLog, pk=pk)
         if not log.pinned_file:
@@ -352,8 +352,17 @@ def api_target_detail(request, pk):
             'name': r.name,
             'email': r.email
         })
-        
-    # 5. Last response time (from most recent log)
+
+    # 5. 24시간 로그 데이터 for 차트
+    logs_24h_data = []
+    for log in logs_24h:
+        logs_24h_data.append({
+            'timestamp': timezone.localtime(log.checked_at).strftime('%Y-%m-%d %H:%M:%S'),
+            'status': log.status,
+            'response_time': int(log.response_time * 1000), # seconds to ms
+        })        
+
+    # 6. Last response time (from most recent log)
     last_log = target.logs.first()
     last_response_time = int(last_log.response_time * 1000) if last_log else 0
 
@@ -370,5 +379,6 @@ def api_target_detail(request, pk):
         "last_response_time": last_response_time,
         "recent_logs": recent_logs,
         "recipients": recipients,
+        "logs_24h_data": logs_24h_data,
     })
 

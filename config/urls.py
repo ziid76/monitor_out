@@ -8,6 +8,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/web-monitor/', permanent=True)),
     path('admin/', admin.site.urls),
     path('web-monitor/', include('web_monitor.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 # Media files serving in development

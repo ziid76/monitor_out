@@ -69,10 +69,13 @@
                         <span class="material-symbols-outlined">list_alt</span>
                         <p class="text-sm font-bold">모니터링 로그</p>
                     </a>
-                    <a class="flex items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors" href="/admin/">
-                        <span class="material-symbols-outlined">admin_panel_settings</span>
-                        <p class="text-sm font-bold">Admin</p>
-                    </a>
+                    <form action="{% url 'logout' %}" method="post" class="m-0 p-0">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full flex items-center gap-2 px-4 py-3 rounded-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                            <span class="material-symbols-outlined">logout</span>
+                            <p class="text-sm font-bold">로그아웃</p>
+                        </button>
+                    </form>
                 </nav>
             </div>
 

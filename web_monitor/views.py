@@ -270,3 +270,42 @@ class EmbedDashboardView(View):
             'down_count': targets.filter(last_status='DOWN').count(),
         }
         return render(request, 'web_monitor/web_monitor_out.html', context)
+
+
+def api_dashboard_data(request):
+    """
+    외부 대시보드 데이터용 JSON API.
+    URL 파라미터 ?key= 를 통해 인증.
+    """
+    # 1. Key Verification
+    expected_key = os.environ.get('EMBED_ACCESS_KEY', '')
+    req_key = request.GET.get('key', '')
+    if expected_key and req_key != expected_key:
+         return JsonResponse({'error': 'Unauthorized'}, status=403)
+         
+    # 2. 통계 쿼리 연산
+    total_count = MonitorTarget.objects.count()
+    up_count = MonitorTarget.objects.filter(last_status='UP').count()
+    down_count = MonitorTarget.objects.filter(last_status='DOWN').count()
+    
+    # 3. 디테일 리스트 직렬화
+    targets = MonitorTarget.objects.all().order_by('-pk')
+    target_data = []
+    for t in targets:
+        target_data.append({
+            'id': t.id,
+            'name': t.name,
+            'url': t.url,
+            'last_status': t.last_status or "PENDING",
+            'last_status_changed_at': t.last_status_changed_at.strftime('%Y-%m-%d %H:%M:%S') if t.last_status_changed_at else None,
+            'last_checked_at': t.last_checked_at.strftime('%H:%M:%S') if t.last_checked_at else None,
+            'check_interval': t.check_interval,
+        })
+        
+    # 4. JSON 응답
+    return JsonResponse({
+        'total_count': total_count,
+        'up_count': up_count,
+        'down_count': down_count,
+        'targets': target_data
+    })

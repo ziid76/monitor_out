@@ -20,4 +20,5 @@ urlpatterns = [
     path('add-recipient/', views.AddRecipientView.as_view(), name='add_recipient'),
     path('embed/', views.EmbedDashboardView.as_view(), name='embed_dashboard'),
     path('api/dashboard_data/', views.api_dashboard_data, name='api_dashboard_data'),
+    path('api/target_detail/<int:pk>/', views.api_target_detail, name='api_target_detail'),
 ]

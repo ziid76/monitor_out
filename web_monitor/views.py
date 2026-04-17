@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -198,7 +199,9 @@ class FetchRecipientsView(ManagerRequiredMixin, View):
         try:
             headers = {
                 'Authorization': f'Bearer {api_token}',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json'
             }
             # 실제 API 호출 (timeout 5초)
             response = requests.get(api_url, headers=headers, timeout=5, verify=False)
@@ -216,7 +219,6 @@ class PinResponseView(ManagerRequiredMixin, View):
         log = get_object_or_404(MonitoringLog, pk=pk)
         target = log.target
         import shutil
-        from django.utils import timezone
         safe_name = "".join([c for c in target.name if c.isalnum() or c in (' ', '-', '_')]).strip().replace(' ', '_')
         src_filename = f"last_response_{target.id}_{safe_name}.html"
         src_path = os.path.join(settings.BASE_DIR, 'logs', 'monitoring_debug', src_filename)
@@ -297,8 +299,8 @@ def api_dashboard_data(request):
             'name': t.name,
             'url': t.url,
             'last_status': t.last_status or "PENDING",
-            'last_status_changed_at': t.last_status_changed_at.strftime('%Y-%m-%d %H:%M:%S') if t.last_status_changed_at else None,
-            'last_checked_at': t.last_checked_at.strftime('%H:%M:%S') if t.last_checked_at else None,
+            'last_status_changed_at': timezone.localtime(t.last_status_changed_at).strftime('%Y-%m-%d %H:%M:%S') if t.last_status_changed_at else None,
+            'last_checked_at': timezone.localtime(t.last_checked_at).strftime('%Y-%m-%d %H:%M:%S') if t.last_checked_at else None,
             'check_interval': t.check_interval,
         })
         
@@ -309,3 +311,64 @@ def api_dashboard_data(request):
         'down_count': down_count,
         'targets': target_data
     })
+
+
+def api_target_detail(request, pk):
+    """
+    특정 대상 사이트의 상세 정보를 제공하는 JSON API.
+    URL 파라미터 ?key= 를 통해 인증.
+    """
+    # 1. Key Verification
+    expected_key = os.environ.get('EMBED_ACCESS_KEY', '')
+    req_key = request.GET.get('key', '')
+    if expected_key and req_key != expected_key:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+        
+    target = get_object_or_404(MonitorTarget, pk=pk)
+    
+    # 2. Uptime calculation (last 24h)
+    from datetime import timedelta
+    now = timezone.now()
+    last_24h = now - timedelta(days=1)
+    logs_24h = MonitoringLog.objects.filter(target=target, checked_at__gte=last_24h)
+    total_logs_count = logs_24h.count()
+    up_logs_count = logs_24h.filter(status='UP').count()
+    uptime_24h = (up_logs_count / total_logs_count * 100) if total_logs_count > 0 else 100.0
+    
+    # 3. Recent logs (last 50)
+    recent_logs = []
+    for log in target.logs.all()[:50]:
+        recent_logs.append({
+            'timestamp': timezone.localtime(log.checked_at).strftime('%Y-%m-%d %H:%M:%S'),
+            'status': log.status,
+            'response_time': int(log.response_time * 1000), # seconds to ms
+            'message': log.error_message or ""
+        })
+        
+    # 4. Recipients
+    recipients = []
+    for r in target.recipients.all():
+        recipients.append({
+            'name': r.name,
+            'email': r.email
+        })
+        
+    # 5. Last response time (from most recent log)
+    last_log = target.logs.first()
+    last_response_time = int(last_log.response_time * 1000) if last_log else 0
+
+    return JsonResponse({
+        "id": target.id,
+        "name": target.name,
+        "url": target.url,
+        "last_status": target.last_status or "PENDING",
+        "last_checked_at": timezone.localtime(target.last_checked_at).strftime('%Y-%m-%d %H:%M:%S') if target.last_checked_at else None,
+        "last_status_changed_at": timezone.localtime(target.last_status_changed_at).strftime('%Y-%m-%d %H:%M:%S') if target.last_status_changed_at else None,
+        "check_interval": target.check_interval,
+        "timeout": target.timeout,
+        "uptime_24h": round(uptime_24h, 2),
+        "last_response_time": last_response_time,
+        "recent_logs": recent_logs,
+        "recipients": recipients,
+    })
+

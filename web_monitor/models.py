@@ -17,6 +17,7 @@ class MonitorTarget(models.Model):
     name = models.CharField(max_length=100, verbose_name="사이트 이름")
     url = models.URLField(verbose_name="모니터링 대상 URL")
     check_interval = models.IntegerField(default=300, verbose_name="체크 주기 (초)")
+    timeout = models.IntegerField(default=20, verbose_name="타임아웃 (초)")
     
     # 낱개 필드로 분리
     signature_title = models.CharField(max_length=200, null=True, blank=True, verbose_name="시그니처: Title")

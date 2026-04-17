@@ -20,7 +20,7 @@ from .forms import MonitorTargetForm
 
 
 
-class ManagerRequiredMixin(UserPassesTestMixin):
+class ManagerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.session.get('manager_authenticated', False)
     
@@ -30,7 +30,7 @@ class ManagerRequiredMixin(UserPassesTestMixin):
 class AdminOrLeaderRequiredMixin(ManagerRequiredMixin):
     pass
 
-class ManagerAuthView(TemplateView):
+class ManagerAuthView(LoginRequiredMixin, TemplateView):
     template_name = 'web_monitor/manager_auth.html'
     
     def get(self, request, *args, **kwargs):
@@ -49,7 +49,7 @@ class ManagerAuthView(TemplateView):
             messages.error(request, "인증코드가 올바르지 않습니다.")
             return redirect('web_monitor:manager_auth')
 
-class ManagerLogoutView(View):
+class ManagerLogoutView(LoginRequiredMixin, View):
     def get(self, request):
         request.session['manager_authenticated'] = False
         messages.info(request, "관리자 모드에서 로그아웃되었습니다.")

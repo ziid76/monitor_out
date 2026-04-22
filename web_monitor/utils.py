@@ -218,7 +218,7 @@ def notify_users(target, event_type, error_msg=""):
     status_emoji = "🚨" if event_type == "DOWN" else "✅"
     title = f"{status_emoji} 장애 발생" if event_type == "DOWN" else f"{status_emoji} 서비스 복구"
     
-    timestamp = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')
     
     message_content = f"사이트: {target.name}\nURL: {target.url}\n시간: {timestamp}"
     if event_type == "DOWN" and error_msg:

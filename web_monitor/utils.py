@@ -66,6 +66,34 @@ def send_kakao_message(email, text, message_type="box", button_text=None, button
         return True
     except: return False
 
+def pin_target_response(target):
+    """
+    Copies the current last_response of a target to the pinned_responses folder.
+    Returns the pinned filename if successful, None otherwise.
+    """
+    import shutil
+    try:
+        safe_name = "".join([c for c in target.name if c.isalnum() or c in (' ', '-', '_')]).strip().replace(' ', '_')
+        src_filename = f"last_response_{target.id}_{safe_name}.html"
+        src_path = os.path.join(settings.BASE_DIR, 'logs', 'monitoring_debug', src_filename)
+        
+        if not os.path.exists(src_path):
+            return None
+            
+        pin_dir = os.path.join(settings.BASE_DIR, 'logs', 'pinned_responses')
+        if not os.path.exists(pin_dir):
+            os.makedirs(pin_dir)
+            
+        timestamp = timezone.now().strftime('%Y%m%d_%H%M%S')
+        dst_filename = f"auto_pinned_{target.id}_{timestamp}_{safe_name}.html"
+        dst_path = os.path.join(pin_dir, dst_filename)
+        
+        shutil.copy2(src_path, dst_path)
+        return dst_filename
+    except Exception as e:
+        logger.error(f"Failed to auto-pin response for {target.name}: {str(e)}")
+        return None
+
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -213,38 +241,71 @@ def perform_monitoring(target_id):
     except MonitorTarget.DoesNotExist:
         return
 
-    # Requests 기반 체크만 수행 (Playwright 제거됨)
-    status, error_msg, response_time = run_check_requests(target)
+    # --- Retry Logic ---
+    # Attempts: 1 (initial) + 3 (retries) = 4 total
+    max_retries = 3
+    attempts = 0
+    status, error_msg, response_time = "DOWN", "Pending initial check", 0
+    pinned_filename = None
     
-    # 상태 변경 감지
+    while attempts <= max_retries:
+        attempts += 1
+        status, error_msg, response_time = run_check_requests(target)
+        
+        if status == "UP":
+            if attempts > 1:
+                logger.info(f"Monitoring [UP] {target.name} confirmed after {attempts-1} retries.")
+            break
+        else:
+            # If this is the FIRST failure in the cycle, pin the response for evidence
+            if pinned_filename is None:
+                pinned_filename = pin_target_response(target)
+                if pinned_filename:
+                    logger.info(f"Auto-pinned first failure response for {target.name}: {pinned_filename}")
+
+            if attempts <= max_retries:
+                # transient failure, wait and retry
+                log_msg = f"Monitoring attempt {attempts}/{max_retries+1} failed for {target.name}: {error_msg}. Retrying in 3s..."
+                print(log_msg)
+                logger.warning(log_msg)
+                time.sleep(3)
+            else:
+                # All retries exhausted
+                logger.error(f"Monitoring [DOWN] {target.name} failed after all {attempts} attempts.")
+
+    # --- Post-Check Processing ---
     prev_status = target.last_status
     now = timezone.now()
     
     if prev_status != status:
         target.last_status_changed_at = now
 
-    # 저장
+    # Save target status
     target.last_status = status
     target.last_checked_at = now
     target.save()
     
     if status == "DOWN":
-        summary_log = f"Monitoring [DOWN] {target.name}: {error_msg}"
+        summary_log = f"Monitoring [DOWN] {target.name}: {error_msg} (After {attempts} attempts)"
         print(summary_log)
         logger.error(summary_log)
     else:
         summary_log = f"Monitoring [UP] {target.name} ({response_time:.3f}s)"
+        if attempts > 1:
+            summary_log += f" [Recovered after {attempts-1} retries]"
         print(summary_log)
         logger.info(summary_log)
 
+    # Create detailed log
     log = MonitoringLog.objects.create(
         target=target,
         status=status,
         response_time=response_time,
-        error_message=summary_log[:500]
+        error_message=summary_log[:500],
+        pinned_file=pinned_filename # Store the pinned file if any attempt failed
     )
     
-    # 알림 발송 로직
+    # Notification logic (only on actual status change)
     if prev_status and prev_status != status:
         if status == "DOWN":
             notify_users(target, "DOWN", error_msg)

@@ -130,10 +130,18 @@ class LogListView(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         site_name = self.request.GET.get('site_name')
         status = self.request.GET.get('status')
+        content_query = self.request.GET.get('content')
+        pinned_only = self.request.GET.get('pinned_only')
+
         if site_name:
             queryset = queryset.filter(target__name__icontains=site_name)
         if status:
             queryset = queryset.filter(status=status)
+        if content_query:
+            queryset = queryset.filter(error_message__icontains=content_query)
+        if pinned_only == 'on':
+            queryset = queryset.exclude(pinned_file__isnull=True).exclude(pinned_file='')
+
         return queryset.select_related('target')
 
     def get_context_data(self, **kwargs):

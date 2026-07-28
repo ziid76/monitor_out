@@ -5,8 +5,8 @@ import os
 from django.conf import settings
 from django.utils import timezone
 from bs4 import BeautifulSoup
-from .models import MonitorTarget, MonitoringLog
-from .models import MonitorTarget, MonitoringLog
+from .models import MonitorTarget, MonitoringLog, WebsiteSizeLog
+from urllib.parse import urljoin, urlparse
 import json
 
 # --- KakaoWork Notification Internal Functions ---
@@ -315,3 +315,121 @@ def perform_monitoring(target_id):
         notify_users(target, "DOWN", error_msg)
         
     return log
+
+
+def measure_website_size(target_url, timeout=30, max_resources=50):
+    """
+    Measures total size of target website including main HTML and linked resources (CSS, JS, Images).
+    Returns (status, total_size_bytes, html_size_bytes, resource_size_bytes, resource_count, error_message)
+    """
+    try:
+        req_headers = DEFAULT_HEADERS.copy()
+        response = requests.get(target_url, timeout=timeout, verify=False, headers=req_headers, stream=True)
+        
+        if response.status_code != 200:
+            return "FAILED", 0, 0, 0, 0, f"HTTP Status {response.status_code}"
+            
+        html_bytes = response.content
+        html_size = len(html_bytes)
+        
+        # HTML parsing for static asset URLs
+        soup = BeautifulSoup(html_bytes, 'lxml')
+        resource_urls = set()
+        
+        # Images
+        for img in soup.find_all('img', src=True):
+            resource_urls.add(img['src'])
+        # Icons
+        for icon in soup.find_all('link', rel=lambda r: r and 'icon' in r.lower(), href=True):
+            resource_urls.add(icon['href'])
+        # CSS
+        for css in soup.find_all('link', rel=lambda r: r and 'stylesheet' in r.lower(), href=True):
+            resource_urls.add(css['href'])
+        # JS
+        for js in soup.find_all('script', src=True):
+            resource_urls.add(js['src'])
+            
+        base_domain = urlparse(target_url).netloc
+        resource_size = 0
+        valid_resource_count = 0
+        
+        for raw_url in list(resource_urls)[:max_resources]:
+            raw_url = raw_url.strip()
+            if not raw_url or raw_url.startswith(('data:', 'javascript:', 'mailto:', '#')):
+                continue
+                
+            abs_url = urljoin(target_url, raw_url)
+            parsed_res = urlparse(abs_url)
+            if parsed_res.scheme not in ('http', 'https'):
+                continue
+                
+            res_bytes = 0
+            try:
+                # Try HEAD first to avoid downloading large files unnecessarily
+                head_resp = requests.head(abs_url, timeout=5, verify=False, headers=req_headers, allow_redirects=True)
+                cl = head_resp.headers.get('Content-Length')
+                if head_resp.status_code == 200 and cl and cl.isdigit():
+                    res_bytes = int(cl)
+                else:
+                    # Stream GET fallback
+                    get_resp = requests.get(abs_url, timeout=5, verify=False, headers=req_headers, stream=True)
+                    if get_resp.status_code == 200:
+                        cl_get = get_resp.headers.get('Content-Length')
+                        if cl_get and cl_get.isdigit():
+                            res_bytes = int(cl_get)
+                        else:
+                            # Read up to 2MB to measure size
+                            content = get_resp.raw.read(2 * 1024 * 1024)
+                            res_bytes = len(content)
+            except Exception:
+                res_bytes = 0
+                
+            if res_bytes > 0:
+                resource_size += res_bytes
+                valid_resource_count += 1
+                
+        total_size = html_size + resource_size
+        return "SUCCESS", total_size, html_size, resource_size, valid_resource_count, ""
+        
+    except requests.exceptions.Timeout:
+        return "FAILED", 0, 0, 0, 0, f"Timeout ({timeout}s) measuring website size"
+    except Exception as e:
+        logger.exception(f"Error measuring website size for {target_url}")
+        return "FAILED", 0, 0, 0, 0, f"Error: {str(e)}"
+
+
+def perform_size_check(target_id):
+    """
+    Executes website size measurement for a target and records WebsiteSizeLog.
+    Updates last_size_bytes and last_size_checked_at on MonitorTarget.
+    """
+    try:
+        target = MonitorTarget.objects.get(id=target_id)
+    except MonitorTarget.DoesNotExist:
+        logger.error(f"Perform size check failed: Target ID {target_id} not found.")
+        return None
+
+    status, total_size, html_size, res_size, res_count, err_msg = measure_website_size(target.url, timeout=target.timeout or 30)
+    now = timezone.now()
+
+    size_log = WebsiteSizeLog.objects.create(
+        target=target,
+        total_size_bytes=total_size,
+        html_size=html_size,
+        resource_size=res_size,
+        resource_count=res_count,
+        status=status,
+        error_message=err_msg[:500] if err_msg else "",
+        checked_at=now
+    )
+
+    if status == "SUCCESS":
+        target.last_size_bytes = total_size
+        target.last_size_checked_at = now
+        target.save()
+        logger.info(f"Website size check [SUCCESS] {target.name}: {size_log.formatted_total_size} (HTML: {size_log.formatted_html_size}, Resources: {res_count} items / {size_log.formatted_resource_size})")
+    else:
+        logger.error(f"Website size check [FAILED] {target.name}: {err_msg}")
+
+    return size_log
+

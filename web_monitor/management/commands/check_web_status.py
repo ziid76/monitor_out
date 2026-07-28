@@ -48,7 +48,8 @@ class Command(BaseCommand):
                     result = perform_monitoring(target.id)
                     self.stdout.write(self.style.SUCCESS(f"  Result: {result.status} ({result.response_time:.3f}s)"))
                 except Exception as e:
-                    self.stdout.write(self.style.ERROR(f"  Error: {str(e)}"))
+                    safe_err = str(e).encode(sys.stdout.encoding or 'utf-8', errors='replace').decode(sys.stdout.encoding or 'utf-8')
+                    self.stdout.write(self.style.ERROR(f"  Error: {safe_err}"))
             
             self.stdout.write(self.style.SUCCESS(f"Completed check cycle."))
 

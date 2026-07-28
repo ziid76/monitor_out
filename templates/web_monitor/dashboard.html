@@ -154,6 +154,20 @@
                             </p>
                         </div>
                     </div>
+
+                    <!-- Website Size (Daily Batch) -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-blue-50/40 rounded-xl border border-blue-100/50">
+                        <div class="flex items-center gap-1.5 text-blue-700">
+                            <span class="material-symbols-outlined text-sm">hard_drive</span>
+                            <span class="text-[11px] font-bold">사이트 용량</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-black text-slate-800">{{ target.formatted_last_size }}</span>
+                            {% if target.last_size_checked_at %}
+                            <span class="text-[10px] text-slate-400 block font-medium">{{ target.last_size_checked_at|date:"m-d H:i" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Card Footer Action -->

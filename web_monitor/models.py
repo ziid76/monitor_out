@@ -37,6 +37,10 @@ class MonitorTarget(models.Model):
     last_status_changed_at = models.DateTimeField(null=True, blank=True, verbose_name="상태 변경 시간")
     last_checked_at = models.DateTimeField(null=True, blank=True, verbose_name="마지막 체크 시간")
     
+    # 사이즈 측정 정보
+    last_size_bytes = models.BigIntegerField(null=True, blank=True, verbose_name="마지막 측정 사이즈 (Bytes)")
+    last_size_checked_at = models.DateTimeField(null=True, blank=True, verbose_name="마지막 사이즈 측정 시간")
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -46,6 +50,12 @@ class MonitorTarget(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.url})"
+
+    @property
+    def formatted_last_size(self):
+        if self.last_size_bytes is None:
+            return "-"
+        return format_bytes_human(self.last_size_bytes)
 
 class MonitoringLog(models.Model):
     target = models.ForeignKey(MonitorTarget, on_delete=models.CASCADE, related_name='logs', verbose_name="대상 사이트")
@@ -59,3 +69,49 @@ class MonitoringLog(models.Model):
         verbose_name = "모니터링 로그"
         verbose_name_plural = "모니터링 로그"
         ordering = ['-checked_at']
+
+def format_bytes_human(size_bytes):
+    if size_bytes is None:
+        return "-"
+    size_bytes = float(size_bytes)
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if size_bytes < 1024.0 or unit == 'TB':
+            break
+        size_bytes /= 1024.0
+    return f"{size_bytes:.2f} {unit}"
+
+class WebsiteSizeLog(models.Model):
+    STATUS_CHOICES = [
+        ('SUCCESS', '성공'),
+        ('FAILED', '실패'),
+    ]
+
+    target = models.ForeignKey(MonitorTarget, on_delete=models.CASCADE, related_name='size_logs', verbose_name="대상 사이트")
+    total_size_bytes = models.BigIntegerField(default=0, verbose_name="총 사이즈 (Bytes)")
+    html_size = models.BigIntegerField(default=0, verbose_name="HTML 사이즈 (Bytes)")
+    resource_size = models.BigIntegerField(default=0, verbose_name="리소스 사이즈 (Bytes)")
+    resource_count = models.IntegerField(default=0, verbose_name="리소스 개수")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='SUCCESS', verbose_name="상태")
+    error_message = models.TextField(null=True, blank=True, verbose_name="에러 메시지")
+    checked_at = models.DateTimeField(default=timezone.now, verbose_name="측정 시간")
+
+    class Meta:
+        verbose_name = "웹사이트 사이즈 로그"
+        verbose_name_plural = "웹사이트 사이즈 로그"
+        ordering = ['-checked_at']
+
+    def __str__(self):
+        return f"{self.target.name} - {self.formatted_total_size} ({self.checked_at.strftime('%Y-%m-%d %H:%M')})"
+
+    @property
+    def formatted_total_size(self):
+        return format_bytes_human(self.total_size_bytes)
+
+    @property
+    def formatted_html_size(self):
+        return format_bytes_human(self.html_size)
+
+    @property
+    def formatted_resource_size(self):
+        return format_bytes_human(self.resource_size)
+

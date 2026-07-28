@@ -11,6 +11,7 @@ urlpatterns = [
     path('target/<int:pk>/', views.TargetDetailView.as_view(), name='target_detail'),
     path('target/<int:pk>/update/', views.TargetUpdateView.as_view(), name='target_update'),
     path('target/<int:pk>/delete/', views.TargetDeleteView.as_view(), name='target_delete'),
+    path('target/<int:pk>/check-size/', views.TargetSizeCheckView.as_view(), name='target_size_check'),
     path('logs/', views.LogListView.as_view(), name='log_list'),
     path('run-command/<str:command_name>/', views.RunCommandView.as_view(), name='run_command'),
     path('target/<int:pk>/view-last-response/', views.ViewLastResponseView.as_view(), name='view_last_response'),

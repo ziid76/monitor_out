@@ -15,8 +15,9 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-from .models import MonitorTarget, MonitoringLog, TargetRecipient
+from .models import MonitorTarget, MonitoringLog, TargetRecipient, WebsiteSizeLog
 from .forms import MonitorTargetForm
+from .utils import perform_size_check
 
 
 
@@ -86,6 +87,7 @@ class TargetDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['logs'] = self.object.logs.all()[:50]
+        context['size_logs'] = self.object.size_logs.all()[:30]
         context['is_manager'] = self.request.session.get('manager_authenticated', False)
         return context
 
@@ -108,11 +110,23 @@ class TargetDeleteView(AdminOrLeaderRequiredMixin, View):
         messages.warning(request, f"{target.name} 대상이 삭제되었습니다.")
         return redirect('web_monitor:dashboard')
 
+class TargetSizeCheckView(AdminOrLeaderRequiredMixin, View):
+    def post(self, request, pk):
+        target = get_object_or_404(MonitorTarget, pk=pk)
+        log = perform_size_check(target.id)
+        if log and log.status == "SUCCESS":
+            messages.success(request, f"{target.name} 웹사이트 사이즈 측정 완료: {log.formatted_total_size}")
+            return JsonResponse({'success': True, 'total_size': log.formatted_total_size, 'checked_at': log.checked_at.strftime('%Y-%m-%d %H:%M:%S')})
+        else:
+            err = log.error_message if log else "측정 실패"
+            messages.error(request, f"{target.name} 웹사이트 사이즈 측정 실패: {err}")
+            return JsonResponse({'success': False, 'message': err})
+
 class RunCommandView(AdminOrLeaderRequiredMixin, View):
     def post(self, request, command_name):
         out = io.StringIO()
         try:
-            if command_name not in ['setup_tasks', 'check_web_status']:
+            if command_name not in ['check_web_status', 'check_web_size', 'cleanup_logs']:
                 return JsonResponse({'success': False, 'message': '허용되지 않은 명령어입니다.'})
             
             call_command(command_name, stdout=out)
@@ -309,6 +323,9 @@ def api_dashboard_data(request):
             'last_status': t.last_status or "PENDING",
             'last_status_changed_at': timezone.localtime(t.last_status_changed_at).strftime('%Y-%m-%d %H:%M:%S') if t.last_status_changed_at else None,
             'last_checked_at': timezone.localtime(t.last_checked_at).strftime('%Y-%m-%d %H:%M:%S') if t.last_checked_at else None,
+            'last_size_bytes': t.last_size_bytes,
+            'last_size_formatted': t.formatted_last_size,
+            'last_size_checked_at': timezone.localtime(t.last_size_checked_at).strftime('%Y-%m-%d %H:%M:%S') if t.last_size_checked_at else None,
             'check_interval': t.check_interval,
         })
         
@@ -374,6 +391,24 @@ def api_target_detail(request, pk):
     last_log = target.logs.first()
     last_response_time = int(last_log.response_time * 1000) if last_log else 0
 
+    # 7. 30일치 웹사이트 사이즈 측정 데이터
+    last_30d = now - timedelta(days=30)
+    size_logs_30d_qs = target.size_logs.filter(checked_at__gte=last_30d).order_by('-checked_at')
+    size_logs_30d = []
+    for slog in size_logs_30d_qs:
+        size_logs_30d.append({
+            'checked_at': timezone.localtime(slog.checked_at).strftime('%Y-%m-%d %H:%M:%S'),
+            'total_size_bytes': slog.total_size_bytes,
+            'total_size_formatted': slog.formatted_total_size,
+            'html_size_bytes': slog.html_size,
+            'html_size_formatted': slog.formatted_html_size,
+            'resource_size_bytes': slog.resource_size,
+            'resource_size_formatted': slog.formatted_resource_size,
+            'resource_count': slog.resource_count,
+            'status': slog.status,
+            'error_message': slog.error_message or ""
+        })
+
     return JsonResponse({
         "id": target.id,
         "name": target.name,
@@ -381,6 +416,9 @@ def api_target_detail(request, pk):
         "last_status": target.last_status or "PENDING",
         "last_checked_at": timezone.localtime(target.last_checked_at).strftime('%Y-%m-%d %H:%M:%S') if target.last_checked_at else None,
         "last_status_changed_at": timezone.localtime(target.last_status_changed_at).strftime('%Y-%m-%d %H:%M:%S') if target.last_status_changed_at else None,
+        "last_size_bytes": target.last_size_bytes,
+        "last_size_formatted": target.formatted_last_size,
+        "last_size_checked_at": timezone.localtime(target.last_size_checked_at).strftime('%Y-%m-%d %H:%M:%S') if target.last_size_checked_at else None,
         "check_interval": target.check_interval,
         "timeout": target.timeout,
         "uptime_24h": round(uptime_24h, 2),
@@ -388,5 +426,6 @@ def api_target_detail(request, pk):
         "recent_logs": recent_logs,
         "recipients": recipients,
         "logs_24h_data": logs_24h_data,
+        "size_logs_30d": size_logs_30d,
     })
 

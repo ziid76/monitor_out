@@ -1,4 +1,10 @@
-# Web Monitor Every Minute Check
+# Web Monitor Every Minute Status Check
 * * * * * cd /app && /usr/local/bin/python manage.py check_web_status >> /app/logs/cron_monitor.log 2>&1
+
+# Web Monitor Daily 2 AM Website Size Check Batch
+0 2 * * * cd /app && /usr/local/bin/python manage.py check_web_size >> /app/logs/cron_size_check.log 2>&1
+
+# Web Monitor Daily 3 AM Old Logs Cleanup Batch
+0 3 * * * cd /app && /usr/local/bin/python manage.py cleanup_logs >> /app/logs/cron_cleanup.log 2>&1
 
 # Required empty line below

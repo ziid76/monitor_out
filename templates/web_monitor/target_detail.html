@@ -76,6 +76,23 @@
                     </div>
                 </div>
                 <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">최근 측정 사이즈 (일단위 배치)</label>
+                    <div class="mt-1 flex items-center justify-between p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+                        <div>
+                            <span class="text-base font-black text-slate-900">{{ target.formatted_last_size }}</span>
+                            {% if target.last_size_checked_at %}
+                            <span class="text-[10px] text-slate-400 block">{{ target.last_size_checked_at|date:"Y-m-d H:i:s" }}</span>
+                            {% endif %}
+                        </div>
+                        {% if is_manager %}
+                        <button onclick="runSizeCheck('{{ target.pk }}')" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">straighten</span>
+                            즉시 측정
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
                     <label class="text-xs font-bold text-slate-400 uppercase">활성 여부</label>
                     <p class="text-sm font-medium text-slate-900">{% if target.is_active %}예{% else %}아니오{% endif %}</p>
                 </div>
@@ -83,67 +100,125 @@
         </div>
 
         <!-- Monitoring Logs -->
-        <div class="lg:col-span-2 bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
-             <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-                <h3 class="text-lg font-bold text-slate-900">최근 점검 이력 (최근 50건)</h3>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">시간</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">응답 시간</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">비고</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        {% for log in logs %}
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-slate-900">{{ log.checked_at|date:"Y-m-d H:i:s" }}</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                {% if log.status == 'UP' %}
-                                <span class="text-emerald-600 font-bold text-sm">UP</span>
-                                {% else %}
-                                <span class="text-red-600 font-bold text-sm">DOWN</span>
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-slate-900">{{ log.response_time|stringformat:".3f" }}s</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs text-slate-600 whitespace-pre-wrap break-all flex-1">
-                                        {{ log.error_message|default:"-" }}
-                                    </span>
-                                    
-                                    <div class="flex items-center gap-1">
-                                        {% if forloop.first %}
-                                        <button onclick="openResponseModal('{{ target.pk }}', '{{ log.pk }}')" class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded hover:bg-indigo-100 transition-colors whitespace-nowrap">
-                                            최근응답
-                                        </button>
-                                        {% endif %}
+        <div class="lg:col-span-2 flex flex-col gap-6">
+            <div class="bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
+                 <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">최근 점검 이력 (최근 50건)</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">시간</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">응답 시간</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">비고</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {% for log in logs %}
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-slate-900">{{ log.checked_at|date:"Y-m-d H:i:s" }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if log.status == 'UP' %}
+                                    <span class="text-emerald-600 font-bold text-sm">UP</span>
+                                    {% else %}
+                                    <span class="text-red-600 font-bold text-sm">DOWN</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-slate-900">{{ log.response_time|stringformat:".3f" }}s</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-600 whitespace-pre-wrap break-all flex-1">
+                                            {{ log.error_message|default:"-" }}
+                                        </span>
+                                        
+                                        <div class="flex items-center gap-1">
+                                            {% if forloop.first %}
+                                            <button onclick="openResponseModal('{{ target.pk }}', '{{ log.pk }}')" class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded hover:bg-indigo-100 transition-colors whitespace-nowrap">
+                                                최근응답
+                                            </button>
+                                            {% endif %}
 
-                                        {% if log.pinned_file %}
-                                        <button onclick="openPinnedModal('{{ log.pk }}')" class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded hover:bg-amber-100 transition-colors whitespace-nowrap" title="박제된 소스 보기">
-                                            박제보기
-                                        </button>
-                                        {% endif %}
+                                            {% if log.pinned_file %}
+                                            <button onclick="openPinnedModal('{{ log.pk }}')" class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded hover:bg-amber-100 transition-colors whitespace-nowrap" title="박제된 소스 보기">
+                                                박제보기
+                                            </button>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-slate-500">
-                                점검 이력이 없습니다.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                    점검 이력이 없습니다.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Website Size Logs Table -->
+            <div class="bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-600">hard_drive</span>
+                        <h3 class="text-lg font-bold text-slate-900">웹사이트 사이즈 측정 이력 (일단위 배치 결과)</h3>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">측정 시간</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">총 용량</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">HTML 용량</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">리소스 용량 (수)</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {% for slog in size_logs %}
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-900">
+                                    {{ slog.checked_at|date:"Y-m-d H:i:s" }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-black text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100/60">
+                                        {{ slog.formatted_total_size }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    {{ slog.formatted_html_size }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    {{ slog.formatted_resource_size }} <span class="text-xs text-slate-400">({{ slog.resource_count }}개 항목)</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if slog.status == 'SUCCESS' %}
+                                    <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 text-xs font-bold">성공</span>
+                                    {% else %}
+                                    <span class="px-2 py-0.5 rounded bg-red-50 text-red-600 text-xs font-bold" title="{{ slog.error_message }}">실패</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+                                    측정된 사이즈 이력이 없습니다.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -280,6 +355,30 @@
         .catch(error => {
             console.error('Error:', error);
             alert('오류가 발생했습니다.');
+        });
+    }
+
+    function runSizeCheck(targetId) {
+        if (!confirm('웹사이트 용량을 즉시 측정하시겠습니까? (외부 리소스 수집에 수 초가 소요될 수 있습니다)')) return;
+        const url = "{% url 'web_monitor:target_size_check' target.pk %}";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('사이즈 측정 완료: ' + data.total_size);
+                location.reload();
+            } else {
+                alert('측정 실패: ' + (data.message || '알 수 없는 오류'));
+            }
+        })
+        .catch(err => {
+            alert('오류가 발생했습니다: ' + err);
         });
     }
 </script>

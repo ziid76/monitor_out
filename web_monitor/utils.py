@@ -2,12 +2,17 @@ import requests
 import time
 import logging
 import os
+import urllib3
+from requests.adapters import HTTPAdapter
 from django.conf import settings
 from django.utils import timezone
 from bs4 import BeautifulSoup
 from .models import MonitorTarget, MonitoringLog, WebsiteSizeLog
 from urllib.parse import urljoin, urlparse
 import json
+
+# verify=False 사용 시 발생하는 InsecureRequestWarning 경고 억제
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # --- KakaoWork Notification Internal Functions ---
 def get_kakaowork_config():
@@ -106,6 +111,33 @@ DEFAULT_HEADERS = {
     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
 }
 
+class LegacySSLAdapter(HTTPAdapter):
+    """
+    구형 암호화 스위트(CBC 계열 등)를 요구하는 레거시 서버와의 TLS 호환성을 보장하는 어댑터
+    """
+    def init_poolmanager(self, *args, **kwargs):
+        ctx = urllib3.util.ssl_.create_urllib3_context()
+        ctx.check_hostname = False
+        ctx.set_ciphers('DEFAULT')
+        kwargs['ssl_context'] = ctx
+        return super().init_poolmanager(*args, **kwargs)
+
+    def proxy_manager_for(self, *args, **kwargs):
+        ctx = urllib3.util.ssl_.create_urllib3_context()
+        ctx.check_hostname = False
+        ctx.set_ciphers('DEFAULT')
+        kwargs['ssl_context'] = ctx
+        return super().proxy_manager_for(*args, **kwargs)
+
+def get_legacy_session():
+    """호환용 커스텀 SSL 어댑터가 마운트된 requests Session 반환"""
+    session = requests.Session()
+    adapter = LegacySSLAdapter()
+    session.mount('https://', adapter)
+    session.mount('http://', HTTPAdapter())
+    return session
+
+
 def validate_signatures_requests(html, target):
     """
     Validate site content using BeautifulSoup for requests-based check.
@@ -163,8 +195,9 @@ def save_response_debug(target, content):
 def run_check_requests(target):
     start_time = time.time()
     try:
+        session = get_legacy_session()
         # stream=True를 사용하여 헤더를 먼저 읽고 본문 크기를 제한함
-        response = requests.get(target.url, timeout=20, verify=False, headers=DEFAULT_HEADERS, stream=True)
+        response = session.get(target.url, timeout=20, verify=False, headers=DEFAULT_HEADERS, stream=True)
         
         # 파일 크기 제한 (최대 2MB까지만 허용, 그 이상은 CPU/메모리 보호 차원에서 차단)
         content_length = response.headers.get('Content-Length')
@@ -323,8 +356,9 @@ def measure_website_size(target_url, timeout=30, max_resources=50):
     Returns (status, total_size_bytes, html_size_bytes, resource_size_bytes, resource_count, error_message)
     """
     try:
+        session = get_legacy_session()
         req_headers = DEFAULT_HEADERS.copy()
-        response = requests.get(target_url, timeout=timeout, verify=False, headers=req_headers, stream=True)
+        response = session.get(target_url, timeout=timeout, verify=False, headers=req_headers, stream=True)
         
         if response.status_code != 200:
             return "FAILED", 0, 0, 0, 0, f"HTTP Status {response.status_code}"
@@ -366,13 +400,13 @@ def measure_website_size(target_url, timeout=30, max_resources=50):
             res_bytes = 0
             try:
                 # Try HEAD first to avoid downloading large files unnecessarily
-                head_resp = requests.head(abs_url, timeout=5, verify=False, headers=req_headers, allow_redirects=True)
+                head_resp = session.head(abs_url, timeout=5, verify=False, headers=req_headers, allow_redirects=True)
                 cl = head_resp.headers.get('Content-Length')
                 if head_resp.status_code == 200 and cl and cl.isdigit():
                     res_bytes = int(cl)
                 else:
                     # Stream GET fallback
-                    get_resp = requests.get(abs_url, timeout=5, verify=False, headers=req_headers, stream=True)
+                    get_resp = session.get(abs_url, timeout=5, verify=False, headers=req_headers, stream=True)
                     if get_resp.status_code == 200:
                         cl_get = get_resp.headers.get('Content-Length')
                         if cl_get and cl_get.isdigit():
